@@ -65,13 +65,15 @@ class SplashFragment : Fragment() {
     }
 
     private fun navigateNextFragment() {
-        // If user logged in, navigate to Quiz
-        // otherwise, navigate to Onboarding
-        val direction = if (session.isLoggedIn()) {
-            SplashFragmentDirections.navigateToLevel()
-        } else {
-            SplashFragmentDirections.navigateToOnboarding()
+        if (isAdded) {
+            // If user logged in, navigate to Quiz
+            // otherwise, navigate to Onboarding
+            val direction = if (session.isLoggedIn()) {
+                SplashFragmentDirections.navigateToLevel()
+            } else {
+                SplashFragmentDirections.navigateToOnboarding()
+            }
+            findNavController().navigate(direction)
         }
-        findNavController().navigate(direction)
     }
 }
