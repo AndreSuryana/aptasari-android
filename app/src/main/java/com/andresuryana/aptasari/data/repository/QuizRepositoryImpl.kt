@@ -1,34 +1,32 @@
 package com.andresuryana.aptasari.data.repository
 
-import android.util.Log
 import com.andresuryana.aptasari.data.DataConverter.toLevel
 import com.andresuryana.aptasari.data.DataConverter.toQuestion
 import com.andresuryana.aptasari.data.model.Level
 import com.andresuryana.aptasari.data.model.Question
 import com.andresuryana.aptasari.data.source.local.LocalDatabase
+import com.andresuryana.aptasari.util.Resource
 
 class QuizRepositoryImpl(private val local: LocalDatabase) : QuizRepository {
 
-    override suspend fun fetchLevels(): List<Level> {
+    override suspend fun fetchLevels(): Resource<List<Level>> {
         return try {
-            local.levelDao().getAllLevel().map {
-                it.toLevel()
-            }
+            Resource.Success(local.levelDao().getAllLevel().map { it.toLevel() })
         } catch (e: Exception) {
-            Log.e(this::class.java.simpleName, "fetchLevels: $e", e)
-            throw e
+            Resource.Error(e.message)
         }
     }
 
-    override suspend fun fetchQuestionByLevel(level: Level): List<Question> {
+    override suspend fun fetchQuestionByLevel(level: Level): Resource<List<Question>> {
         return try {
-            local.questionDao().getQuestionByLevelId(level.id).map {
-                val answers = local.answerDao().getAnswerByQuestionId(it.id)
-                it.toQuestion(answers)
-            }
+            Resource.Success(
+                local.questionDao().getQuestionByLevelId(level.id).map {
+                    val answers = local.answerDao().getAnswerByQuestionId(it.id)
+                    it.toQuestion(answers)
+                }
+            )
         } catch (e: Exception) {
-            Log.e(this::class.java.simpleName, "fetchQuestionByLevel: $e", e)
-            throw e
+            Resource.Error(e.message)
         }
     }
 }

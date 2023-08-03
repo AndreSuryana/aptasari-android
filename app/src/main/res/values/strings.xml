@@ -11,6 +11,7 @@
     <string name="title_register_success" tools:ignore="TypographyEllipsis">Hore...\nRegistrasi berhasil</string>
     <string name="title_forgot_password">Lupa password yaa???</string>
     <string name="title_greeting">Haii %s,\nApa kabar hari ini?</string>
+    <string name="title_greeting_anonymous">Haii,\nApa kabar hari ini?</string>
     <string name="title_category_level">Kategori/Level</string>
     <string name="title_choose_target">Pilih Target</string>
 
