@@ -111,6 +111,7 @@ class LoginFragment : Fragment() {
                 helperText = getString(R.string.helper_invalid_email)
                 requestFocus()
             }
+            return
         }
 
         // Password
