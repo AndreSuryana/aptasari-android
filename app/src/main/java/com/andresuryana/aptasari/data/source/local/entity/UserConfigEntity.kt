@@ -22,6 +22,9 @@ data class UserConfigEntity(
     val isNotifyTarget: Boolean = false,
 
     @ColumnInfo(name = UserConfigTable.COLUMN_NOTIFY_DURATION)
-    val notifyDuration: Long = 0
+    val notifyDuration: Long = 0,
+
+    @ColumnInfo(name = UserConfigTable.COLUMN_CURRENT_PLAYTIME_DURATION)
+    val playTimeDuration: Long = 0
 
 )

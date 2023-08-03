@@ -69,6 +69,10 @@
     <string name="error_send_forgot_password_email">Gagal mengirim email! Mohon periksa email atau coba kembali</string>
     <string name="error_email_not_verified">Mohon verifikasi email sebelum melanjutkan</string>
 
+    <!-- Notification -->
+    <string name="notif_title_learning_target">Target Belajar</string>
+    <string name="notif_subtitle_learning_target">Kamu belum memenuhi target belajarmu selama %s menit per hari!</string>
+
     <!-- Others -->
     <string name="question_have_account">Belum punya akun?</string>
 

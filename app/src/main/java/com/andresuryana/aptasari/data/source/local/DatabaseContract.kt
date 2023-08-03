@@ -37,5 +37,6 @@ object DatabaseContract {
         const val COLUMN_USER_ID = "user_id"
         const val COLUMN_IS_NOTIFY_TARGET = "is_notify_target"
         const val COLUMN_NOTIFY_DURATION = "notify_duration"
+        const val COLUMN_CURRENT_PLAYTIME_DURATION = "current_playtime_duration"
     }
 }

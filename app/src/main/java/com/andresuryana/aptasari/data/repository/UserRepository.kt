@@ -14,4 +14,8 @@ interface UserRepository {
     suspend fun logout(): Resource<Boolean>
 
     suspend fun forgotPassword(email: String): Resource<Boolean>
+
+    suspend fun updateUserNotificationConfig(userId: String, isNotifyTarget: Boolean, notifyDuration: Long)
+
+    suspend fun updateUserPlayTime(userId: String, playTime: Long)
 }
