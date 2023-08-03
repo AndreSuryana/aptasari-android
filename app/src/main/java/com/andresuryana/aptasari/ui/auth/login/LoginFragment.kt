@@ -15,8 +15,9 @@ import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.databinding.FragmentLoginBinding
 import com.andresuryana.aptasari.util.Ext.isEmail
 import com.andresuryana.aptasari.util.LoadingUtils.dismissLoadingDialog
-import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
 import com.andresuryana.aptasari.util.LoadingUtils.showLoadingDialog
+import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbar
+import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -47,6 +48,9 @@ class LoginFragment : Fragment() {
         arguments?.getString("user_email")?.let { email ->
             // If exists, insert into email input
             binding.etEmail.setText(email)
+
+            // Show dialog message
+            showSnackbar(R.string.success_register)
         }
 
         // Setup button listener
@@ -129,17 +133,20 @@ class LoginFragment : Fragment() {
             else activity?.dismissLoadingDialog()
         }
 
-        // Error & Register Action
+        // Error
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Error
-                viewModel.isError.collectLatest { messageRes ->
+                viewModel.isError.collectLatest { messagePair ->
                     withContext(Dispatchers.Main) {
-                        showSnackbarError(messageRes)
+                        showSnackbarError(messagePair)
                     }
                 }
+            }
+        }
 
-                // Register Action
+        // Register Action
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.loginAction.collectLatest {
                     withContext(Dispatchers.Main) {
                         // Navigate to level fragment

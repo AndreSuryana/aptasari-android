@@ -1,7 +1,6 @@
 package com.andresuryana.aptasari.ui.auth.register
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.andresuryana.aptasari.R
+import com.andresuryana.aptasari.data.model.User
 import com.andresuryana.aptasari.databinding.FragmentRegisterBinding
 import com.andresuryana.aptasari.util.Ext.isEmail
 import com.andresuryana.aptasari.util.LoadingUtils.dismissLoadingDialog
@@ -30,6 +30,8 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<RegisterViewModel>()
+
+    private var user: User? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,7 +65,7 @@ class RegisterFragment : Fragment() {
         }
         binding.btnContinue.setOnClickListener {
             findNavController().navigate(
-                RegisterFragmentDirections.navigateToLogin(viewModel.user?.email)
+                RegisterFragmentDirections.navigateToLogin(user?.email)
             )
         }
         binding.btnBack.setOnClickListener {
@@ -136,19 +138,23 @@ class RegisterFragment : Fragment() {
             else activity?.dismissLoadingDialog()
         }
 
-        // Error & Register Action
+        // Error
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Error
-                viewModel.isError.collectLatest { messageRes ->
+                viewModel.isError.collectLatest { messagePair ->
                     withContext(Dispatchers.Main) {
-                        showSnackbarError(messageRes)
+                        showSnackbarError(messagePair)
                     }
                 }
+            }
+        }
 
-                // Register Action
+        // Register Action
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.registerAction.collectLatest {
-                    Log.d(this@RegisterFragment::class.java.simpleName, "observeUiState: registered!")
+                    // Set current registered user
+                    user = it
                     withContext(Dispatchers.Main) {
                         // Set UI State to register success
                         setUiSuccessRegister()

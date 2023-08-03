@@ -1,11 +1,12 @@
 package com.andresuryana.aptasari.ui.auth.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.data.repository.UserRepository
+import com.andresuryana.aptasari.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +22,7 @@ class LoginViewModel @Inject constructor(
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _isError = MutableSharedFlow<Int>()
+    private val _isError = MutableSharedFlow<Pair<Int?, String?>>()
     val isError = _isError.asSharedFlow()
 
     private val _loginAction = MutableSharedFlow<Unit>()
@@ -29,20 +30,18 @@ class LoginViewModel @Inject constructor(
 
     fun login(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                _isLoading.postValue(true)
-                val user = userRepository.login(email, password)
-                if (user != null) {
-                    _loginAction.emit(Unit)
-                } else {
-                    _isError.emit(R.string.error_login)
+            _isLoading.postValue(true)
+            when (val result = userRepository.login(email, password)) {
+                is Resource.Success -> {
+                    Log.d("LoginViewModel", "login: user=${result.data}")
+                    if (result.data != null) {
+                        _loginAction.emit(Unit)
+                    }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _isError.emit(R.string.error_login)
-            } finally {
-                _isLoading.postValue(false)
+
+                is Resource.Error -> _isError.emit(Pair(result.messageRes, result.message))
             }
+            _isLoading.postValue(false)
         }
     }
 }

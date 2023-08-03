@@ -16,8 +16,7 @@ class FirebaseSourceImpl(private val auth: FirebaseAuth) : FirebaseSource {
                 User(authResult.user?.uid, authResult.user?.displayName, authResult.user?.email)
             else null
         } catch (e: Exception) {
-            e.printStackTrace()
-            null
+            throw e
         }
     }
 
@@ -29,8 +28,7 @@ class FirebaseSourceImpl(private val auth: FirebaseAuth) : FirebaseSource {
                 User(authResult.user?.uid, authResult.user?.displayName, authResult.user?.email)
             else null
         } catch (e: Exception) {
-            e.printStackTrace()
-            null
+            throw e
         }
     }
 
@@ -48,8 +46,7 @@ class FirebaseSourceImpl(private val auth: FirebaseAuth) : FirebaseSource {
             // Return user
             User(authResult?.user?.uid, username, email)
         } catch (e: Exception) {
-            e.printStackTrace()
-            null
+            throw e
         }
     }
 

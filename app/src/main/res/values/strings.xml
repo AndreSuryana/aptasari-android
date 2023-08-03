@@ -52,10 +52,15 @@
     <string name="helper_empty_confirm_password">Konfirmasi password tidak boleh kosong</string>
     <string name="helper_invalid_email">Format email tidak valid</string>
 
+    <!-- Success -->
+    <string name="success_register">Registrasi berhasil! Silahkan login dengan akunmu</string>
+
     <!-- Error -->
+    <string name="error_default">Terjadi kesalahan! Mohon coba kembali</string>
     <string name="error_register">Registrasi gagal! Mohon coba kembali</string>
     <string name="error_register_password_not_match">Password konfirmasi salah!</string>
     <string name="error_login">Login gagal! Mohon coba kembali</string>
+    <string name="error_user_not_found">Akun tidak ditemukan atau belum terdaftar!</string>
 
     <!-- Others -->
     <string name="question_have_account">Belum punya akun?</string>
