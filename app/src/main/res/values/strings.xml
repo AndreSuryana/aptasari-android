@@ -1,0 +1,64 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- App Name -->
+    <string name="app_name">Aptasari</string>
+    <string name="app_name_with_hashtag">#AplikasiTembangBali</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Title -->
+    <string name="title_onboarding">Game Edukasi\nTembang Bali</string>
+    <string name="title_login">Login</string>
+    <string name="title_register">Register</string>
+    <string name="title_register_success" tools:ignore="TypographyEllipsis">Hore...\nRegistrasi berhasil</string>
+    <string name="title_forgot_password">Lupa password yaa???</string>
+    <string name="title_greeting">Haii %s,\nApa kabar hari ini?</string>
+    <string name="title_category_level">Kategori/Level</string>
+    <string name="title_choose_target">Pilih Target</string>
+
+    <!-- Subtitle -->
+    <string name="subtitle_onboarding">Saking Tuhu Manah Guru\nKaweruhin Luir Senjata</string>
+    <string name="subtitle_register_success">Silahkan cek emailmu untuk verifikasi akun yaa</string>
+    <string name="subtitle_login_with">Login dengan</string>
+    <string name="subtitle_forgot_password" tools:ignore="TypographyEllipsis">Jangan khawatir yaa,\nKamu masih bisa mengubah password.\nSilahkan masukkan akun emailmu yang tertaut dengan akun Aptasari yaa...</string>
+
+    <!-- Label -->
+    <string name="label_username">Username</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_confirm_password">Konfirmasi Password</string>
+    <string name="label_search" tools:ignore="TypographyEllipsis">Cari...</string>
+
+    <!-- Button -->
+    <string name="btn_login">Login</string>
+    <string name="btn_login_google">Google</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_continue" tools:ignore="TypographyEllipsis">Lanjut...</string>
+    <string name="btn_forgot_password">Lupa password?</string>
+    <string name="btn_back">Back</string>
+
+    <!-- Learning Target -->
+    <string name="target_title_relax">Santai</string>
+    <string name="target_title_normal">Biasa</string>
+    <string name="target_title_serious">Serius</string>
+    <string name="target_title_intense">Giat</string>
+    <string name="target_description_relax">5 menit sehari</string>
+    <string name="target_description_normal">10 menit sehari</string>
+    <string name="target_description_serious">15 menit sehari</string>
+    <string name="target_description_intense">20 menit sehari</string>
+
+    <!-- Helper -->
+    <string name="helper_empty_username">Username tidak boleh kosong</string>
+    <string name="helper_empty_email">Email tidak boleh kosong</string>
+    <string name="helper_empty_password">Password tidak boleh kosong</string>
+    <string name="helper_empty_confirm_password">Konfirmasi password tidak boleh kosong</string>
+    <string name="helper_invalid_email">Format email tidak valid</string>
+
+    <!-- Error -->
+    <string name="error_register">Registrasi gagal! Mohon coba kembali</string>
+    <string name="error_register_password_not_match">Password konfirmasi salah!</string>
+    <string name="error_login">Login gagal! Mohon coba kembali</string>
+
+    <!-- Others -->
+    <string name="question_have_account">Belum punya akun?</string>
+    <string name="btn_send">Kirim</string>
+
+</resources>

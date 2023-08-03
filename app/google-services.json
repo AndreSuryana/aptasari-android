@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "287927855445",
+    "project_id": "aptasari-android",
+    "storage_bucket": "aptasari-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287927855445:android:cf5c121a4a04f14d02e7dc",
+        "android_client_info": {
+          "package_name": "com.andresuryana.aptasari"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287927855445-ffe0kttgheu90rg3rr4ldrg2a8ggq7r8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andresuryana.aptasari",
+            "certificate_hash": "310a419266dc3984febe962e4e8cf0a2909c6227"
+          }
+        },
+        {
+          "client_id": "287927855445-vih4gvir69fir4v1uttu25tmfqhmi8dd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXfeeaslyZAiBvYMncmRBsPtkJJnEmZVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287927855445-vih4gvir69fir4v1uttu25tmfqhmi8dd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

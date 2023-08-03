@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.andresuryana.aptasari.ui.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/navigateToOnboarding"
+            app:destination="@id/onboardingFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/app_navigation"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/navigateToLevel"
+            app:destination="@id/levelFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/app_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.andresuryana.aptasari.ui.onboarding.OnboardingFragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding" >
+        <action
+            android:id="@+id/navigateToLogin"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/navigateToRegister"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.andresuryana.aptasari.ui.auth.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/navigateToRegister"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/navigateToForgotPassword"
+            app:destination="@id/forgotPasswordFragment" />
+        <action
+            android:id="@+id/navigateToLevel"
+            app:destination="@id/levelFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/app_navigation"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="user_email"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.andresuryana.aptasari.ui.auth.register.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/navigateToLogin"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.andresuryana.aptasari.ui.auth.forgot.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" />
+    <fragment
+        android:id="@+id/levelFragment"
+        android:name="com.andresuryana.aptasari.ui.level.LevelFragment"
+        android:label="fragment_level"
+        tools:layout="@layout/fragment_level" >
+        <action
+            android:id="@+id/navigateToTarget"
+            app:destination="@id/targetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/targetFragment"
+        android:name="com.andresuryana.aptasari.ui.target.TargetFragment"
+        android:label="fragment_target"
+        tools:layout="@layout/fragment_target" >
+        <action
+            android:id="@+id/navigateToQuiz"
+            app:destination="@id/quizFragment"
+            app:popUpTo="@id/levelFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/quizFragment"
+        android:name="com.andresuryana.aptasari.ui.quiz.QuizFragment"
+        android:label="fragment_quiz"
+        tools:layout="@layout/fragment_quiz" />
+
+</navigation>
