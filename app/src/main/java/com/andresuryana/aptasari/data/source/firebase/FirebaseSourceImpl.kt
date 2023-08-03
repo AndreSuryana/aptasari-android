@@ -43,6 +43,9 @@ class FirebaseSourceImpl(private val auth: FirebaseAuth) : FirebaseSource {
                 .build()
             authResult.user?.updateProfile(userUpdate)
 
+            // Send email verification
+            authResult.user?.sendEmailVerification()
+
             // Return user
             User(authResult?.user?.uid, username, email)
         } catch (e: Exception) {

@@ -16,7 +16,9 @@ import com.andresuryana.aptasari.databinding.FragmentRegisterBinding
 import com.andresuryana.aptasari.util.Ext.isEmail
 import com.andresuryana.aptasari.util.LoadingUtils.dismissLoadingDialog
 import com.andresuryana.aptasari.util.LoadingUtils.showLoadingDialog
+import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbar
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -64,9 +66,13 @@ class RegisterFragment : Fragment() {
             }
         }
         binding.btnContinue.setOnClickListener {
-            findNavController().navigate(
-                RegisterFragmentDirections.navigateToLogin(user?.email)
-            )
+            if (isEmailVerified()) {
+                findNavController().navigate(
+                    RegisterFragmentDirections.navigateToLogin(user?.email)
+                )
+            } else {
+                showSnackbar(R.string.error_email_not_verified)
+            }
         }
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
@@ -168,5 +174,14 @@ class RegisterFragment : Fragment() {
     private fun setUiSuccessRegister() {
         binding.registerLinearContainer.visibility = View.GONE
         binding.registerSuccessLinearContainer.visibility = View.VISIBLE
+    }
+
+    private fun isEmailVerified(): Boolean {
+        val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser?.isEmailVerified == false) {
+            auth.signOut()
+            return false
+        }
+        return true
     }
 }

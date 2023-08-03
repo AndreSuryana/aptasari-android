@@ -67,6 +67,7 @@
     <string name="error_login">Login gagal! Mohon coba kembali</string>
     <string name="error_user_not_found">Akun tidak ditemukan atau belum terdaftar!</string>
     <string name="error_send_forgot_password_email">Gagal mengirim email! Mohon periksa email atau coba kembali</string>
+    <string name="error_email_not_verified">Mohon verifikasi email sebelum melanjutkan</string>
 
     <!-- Others -->
     <string name="question_have_account">Belum punya akun?</string>
