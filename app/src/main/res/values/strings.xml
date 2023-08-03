@@ -19,6 +19,7 @@
     <string name="subtitle_register_success">Silahkan cek emailmu untuk verifikasi akun yaa</string>
     <string name="subtitle_login_with">Login dengan</string>
     <string name="subtitle_forgot_password" tools:ignore="TypographyEllipsis">Jangan khawatir yaa,\nKamu masih bisa mengubah password.\nSilahkan masukkan akun emailmu yang tertaut dengan akun Aptasari yaa...</string>
+    <string name="subtitle_forgot_password_email_sent">Silahkan lakukan reset password melalui link yang telah dikirimkan ke emailmu</string>
 
     <!-- Label -->
     <string name="label_username">Username</string>
@@ -34,6 +35,8 @@
     <string name="btn_continue" tools:ignore="TypographyEllipsis">Lanjut...</string>
     <string name="btn_forgot_password">Lupa password?</string>
     <string name="btn_back">Back</string>
+    <string name="btn_send">Kirim</string>
+    <string name="btn_send_again">Kirim Ulang</string>
 
     <!-- Learning Target -->
     <string name="target_title_relax">Santai</string>
@@ -54,6 +57,7 @@
 
     <!-- Success -->
     <string name="success_register">Registrasi berhasil! Silahkan login dengan akunmu</string>
+    <string name="success_send_forgot_password_email">Email telah terkirim! Mohon periksa emailmu</string>
 
     <!-- Error -->
     <string name="error_default">Terjadi kesalahan! Mohon coba kembali</string>
@@ -61,9 +65,9 @@
     <string name="error_register_password_not_match">Password konfirmasi salah!</string>
     <string name="error_login">Login gagal! Mohon coba kembali</string>
     <string name="error_user_not_found">Akun tidak ditemukan atau belum terdaftar!</string>
+    <string name="error_send_forgot_password_email">Gagal mengirim email! Mohon periksa email atau coba kembali</string>
 
     <!-- Others -->
     <string name="question_have_account">Belum punya akun?</string>
-    <string name="btn_send">Kirim</string>
 
 </resources>
