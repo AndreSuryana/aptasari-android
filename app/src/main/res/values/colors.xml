@@ -5,4 +5,5 @@
     <color name="primary">#FF2B2AAA</color>
     <color name="card_background">#FFCBEFFF</color>
     <color name="header_background">#FF99CBFE</color>
+    <color name="danger">#E33939</color>
 </resources>
