@@ -83,7 +83,7 @@ class ProfileFragment : Fragment() {
                 Toast.makeText(context, "Alamat", Toast.LENGTH_SHORT).show()
             }
             SettingMenu.LEARNING_TARGET -> {
-                Toast.makeText(context, "Notifikasi Target Belajar", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.targetFragment)
             }
             SettingMenu.LOGOUT -> {
                 AlertDialog.Builder(requireContext())

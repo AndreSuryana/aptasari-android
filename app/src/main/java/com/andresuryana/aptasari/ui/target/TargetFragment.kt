@@ -75,6 +75,8 @@ class TargetFragment : Fragment() {
     }
 
     private fun setupButtonListener() {
+        binding.btnContinue.text = if (levelId != null) getString(R.string.btn_continue)
+        else getString(R.string.btn_save)
         binding.btnContinue.setOnClickListener {
             // Init session helper
             val session = AppModule.provideSessionHelper(requireContext().applicationContext)
@@ -91,9 +93,13 @@ class TargetFragment : Fragment() {
                 showSnackbar(R.string.success_set_target_alarm)
             }
 
-            // Navigate to quiz fragment
-            levelId?.let {
-                findNavController().navigate(TargetFragmentDirections.navigateToQuiz(it))
+            // If levelId is not null, it means next navigation is quiz fragment
+            // otherwise, it means accessed from profile/setting
+            if (levelId != null) {
+                // Navigate to quiz fragment
+                findNavController().navigate(TargetFragmentDirections.navigateToQuiz(levelId!!))
+            } else {
+                findNavController().popBackStack()
             }
         }
     }

@@ -47,6 +47,7 @@
     <string name="btn_send_again">Kirim Ulang</string>
     <string name="btn_positive">Iya</string>
     <string name="btn_negative">Batalkan</string>
+    <string name="btn_save">Simpan</string>
 
     <!-- Learning Target -->
     <string name="target_title_relax">Santai</string>
