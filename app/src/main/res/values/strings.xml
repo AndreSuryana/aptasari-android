@@ -45,6 +45,8 @@
     <string name="btn_back">Back</string>
     <string name="btn_send">Kirim</string>
     <string name="btn_send_again">Kirim Ulang</string>
+    <string name="btn_positive">Iya</string>
+    <string name="btn_negative">Batalkan</string>
 
     <!-- Learning Target -->
     <string name="target_title_relax">Santai</string>
@@ -66,6 +68,7 @@
     <!-- Success -->
     <string name="success_register">Registrasi berhasil! Silahkan login dengan akunmu</string>
     <string name="success_send_forgot_password_email">Email telah terkirim! Mohon periksa emailmu</string>
+    <string name="success_set_target_alarm">Berhasil menyetel notifikasi target belajarmu</string>
 
     <!-- Error -->
     <string name="error_default">Terjadi kesalahan! Mohon coba kembali</string>
@@ -82,5 +85,6 @@
 
     <!-- Others -->
     <string name="question_have_account">Belum punya akun?</string>
+    <string name="question_logout">Yakin ingin keluar dari akun ini?</string>
 
 </resources>
