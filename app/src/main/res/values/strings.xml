@@ -14,6 +14,8 @@
     <string name="title_greeting_anonymous">Haii,\nApa kabar hari ini?</string>
     <string name="title_category_level">Kategori/Level</string>
     <string name="title_choose_target">Pilih Target</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_profile">Akun</string>
 
     <!-- Subtitle -->
     <string name="subtitle_onboarding">Saking Tuhu Manah Guru\nKaweruhin Luir Senjata</string>

@@ -3,6 +3,7 @@ package com.andresuryana.aptasari.ui.level
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +19,6 @@ import com.andresuryana.aptasari.adapter.LevelAdapter
 import com.andresuryana.aptasari.data.model.Level
 import com.andresuryana.aptasari.databinding.FragmentLevelBinding
 import com.andresuryana.aptasari.di.AppModule
-import com.andresuryana.aptasari.util.LoadingUtils.dismissLoadingDialog
-import com.andresuryana.aptasari.util.LoadingUtils.showLoadingDialog
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
@@ -42,15 +41,20 @@ class LevelFragment : Fragment() {
 
     private lateinit var levelAdapter: LevelAdapter
 
+    override fun onResume() {
+        super.onResume()
+
+        // Request data
+        Log.d("LevelFragment", "onResume: called!")
+        viewModel.getAllLevel()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentLevelBinding.inflate(layoutInflater)
-
-        // Request data
-        viewModel.getAllLevel()
 
         return binding.root
     }
@@ -113,10 +117,10 @@ class LevelFragment : Fragment() {
 
     private fun observeUiState() {
         // Loading
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) activity?.showLoadingDialog()
-            else activity?.dismissLoadingDialog()
-        }
+//        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+//            if (isLoading) activity?.showLoadingDialog()
+//            else activity?.dismissLoadingDialog()
+//        }
 
         // Error
         lifecycleScope.launch {
