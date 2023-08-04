@@ -21,6 +21,7 @@
     <string name="subtitle_login_with">Login dengan</string>
     <string name="subtitle_forgot_password" tools:ignore="TypographyEllipsis">Jangan khawatir yaa,\nKamu masih bisa mengubah password.\nSilahkan masukkan akun emailmu yang tertaut dengan akun Aptasari yaa...</string>
     <string name="subtitle_forgot_password_email_sent">Silahkan lakukan reset password melalui link yang telah dikirimkan ke emailmu</string>
+    <string name="subtitle_learning_target">Pilih target belajarmu, kamu bisa merubah target ini lagi nanti</string>
 
     <!-- Label -->
     <string name="label_username">Username</string>

@@ -121,8 +121,8 @@ class LevelFragment : Fragment() {
 
         // If first time navigate to quiz fragment, show target fragment first
         // then continue if target is selected
-        val direction = if (session.isUserFirstQuiz()) LevelFragmentDirections.navigateToQuiz(level.id)
-        else LevelFragmentDirections.navigateToTarget()
+        val direction = if (session.isUserFirstQuiz()) LevelFragmentDirections.navigateToTarget(level.id)
+        else LevelFragmentDirections.navigateToQuiz(level.id)
         findNavController().navigate(direction)
     }
 

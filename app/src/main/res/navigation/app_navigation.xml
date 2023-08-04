@@ -93,6 +93,9 @@
             android:id="@+id/navigateToQuiz"
             app:destination="@id/quizFragment"
             app:popUpTo="@id/levelFragment" />
+        <argument
+            android:name="level_id"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/quizFragment"

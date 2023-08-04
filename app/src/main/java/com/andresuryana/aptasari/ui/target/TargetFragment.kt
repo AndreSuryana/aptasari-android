@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.andresuryana.aptasari.adapter.TargetAdapter
 import com.andresuryana.aptasari.databinding.FragmentTargetBinding
+import com.andresuryana.aptasari.di.AppModule
 import com.andresuryana.aptasari.util.LearningTarget
 import com.andresuryana.aptasari.worker.TargetAlarmHelper.startLearningTargetAlarm
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +28,7 @@ class TargetFragment : Fragment() {
     private lateinit var targetAdapter: TargetAdapter
 
     private var target: LearningTarget? = null
+    private var levelId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +41,11 @@ class TargetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Get level id from arguments
+        arguments?.getString("level_id")?.let {
+            levelId = it
+        }
 
         // Setup adapter
         setupTargetAdapter()
@@ -53,9 +61,10 @@ class TargetFragment : Fragment() {
 
     private fun setupTargetAdapter() {
         targetAdapter = TargetAdapter()
-        targetAdapter.setList(LearningTarget.values().toList())
+        targetAdapter.submitList(LearningTarget.values().toList())
         targetAdapter.setOnItemClickListener {
             target = it
+            targetAdapter.setSelectedItem(binding.rvTarget, it)
         }
         binding.rvTarget.apply {
             adapter = targetAdapter
@@ -65,6 +74,9 @@ class TargetFragment : Fragment() {
 
     private fun setupButtonListener() {
         binding.btnContinue.setOnClickListener {
+            // Init session helper
+            val session = AppModule.provideSessionHelper(requireContext().applicationContext)
+
             target?.let { target ->
                 // Update user config
                 viewModel.updateUserConfig(
@@ -73,6 +85,12 @@ class TargetFragment : Fragment() {
                     target.duration
                 )
                 startLearningTargetAlarm(requireContext())
+                session.setUserFirstQuiz(false)
+            }
+
+            // Navigate to quiz fragment
+            levelId?.let {
+                findNavController().navigate(TargetFragmentDirections.navigateToQuiz(it))
             }
         }
     }
