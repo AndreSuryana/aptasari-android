@@ -41,6 +41,10 @@ class LevelFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentLevelBinding.inflate(layoutInflater)
+
+        // Request data
+        viewModel.getAllLevel()
+
         return binding.root
     }
 
@@ -98,6 +102,7 @@ class LevelFragment : Fragment() {
         // Level
         viewModel.levels.observe(viewLifecycleOwner) { levels ->
             levelAdapter.setList(levels)
+            setUiStateEmptyLevel(levels.isEmpty())
         }
     }
 
@@ -112,7 +117,9 @@ class LevelFragment : Fragment() {
         findNavController().navigate(direction)
     }
 
-    private fun setUiStateEmptyLevel() {
-        // TODO: Implement ui state update!
+    private fun setUiStateEmptyLevel(isEmpty: Boolean) {
+        // Hide recycler view, and show empty icon
+        binding.rvLevel.visibility = if (isEmpty) View.GONE else View.VISIBLE
+        binding.ivEmptyData.visibility = if (isEmpty) View.VISIBLE else View.GONE
     }
 }
