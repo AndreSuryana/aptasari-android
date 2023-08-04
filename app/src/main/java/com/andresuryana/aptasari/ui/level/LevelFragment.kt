@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.adapter.LevelAdapter
 import com.andresuryana.aptasari.data.model.Level
@@ -19,6 +18,11 @@ import com.andresuryana.aptasari.di.AppModule
 import com.andresuryana.aptasari.util.LoadingUtils.dismissLoadingDialog
 import com.andresuryana.aptasari.util.LoadingUtils.showLoadingDialog
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -70,7 +74,12 @@ class LevelFragment : Fragment() {
         }
         binding.rvLevel.apply {
             adapter = levelAdapter
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = FlexboxLayoutManager(requireContext()).apply {
+                justifyContent = JustifyContent.SPACE_EVENLY
+                alignItems = AlignItems.CENTER
+                flexDirection = FlexDirection.ROW
+                flexWrap = FlexWrap.WRAP
+            }
         }
     }
 

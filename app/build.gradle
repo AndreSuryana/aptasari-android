@@ -49,6 +49,7 @@ ext {
 
     materialVersion = "1.9.0"
     constraintLayoutVersion = "2.1.4"
+    flexBoxVersion = "3.0.0"
 
     jUnitVersion = "4.13.2"
     extJUnitVersion = "1.1.5"
@@ -72,6 +73,7 @@ dependencies {
     // UI
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    implementation "com.google.android.flexbox:flexbox:$flexBoxVersion"
 
     // Test
     testImplementation "junit:junit:$jUnitVersion"
