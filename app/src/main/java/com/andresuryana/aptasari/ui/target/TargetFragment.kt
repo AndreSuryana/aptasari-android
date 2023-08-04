@@ -9,10 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.adapter.TargetAdapter
 import com.andresuryana.aptasari.databinding.FragmentTargetBinding
 import com.andresuryana.aptasari.di.AppModule
 import com.andresuryana.aptasari.util.LearningTarget
+import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbar
 import com.andresuryana.aptasari.worker.TargetAlarmHelper.startLearningTargetAlarm
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,6 +88,7 @@ class TargetFragment : Fragment() {
                 )
                 startLearningTargetAlarm(requireContext())
                 session.setUserFirstQuiz(false)
+                showSnackbar(R.string.success_set_target_alarm)
             }
 
             // Navigate to quiz fragment
