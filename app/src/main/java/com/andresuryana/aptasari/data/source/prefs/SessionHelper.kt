@@ -12,4 +12,8 @@ interface SessionHelper {
 
     fun clearSession()
 
+    fun setUserFirstQuiz(value: Boolean)
+
+    fun isUserFirstQuiz(): Boolean
+
 }

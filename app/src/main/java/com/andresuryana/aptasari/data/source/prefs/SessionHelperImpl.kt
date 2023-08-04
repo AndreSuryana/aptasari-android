@@ -38,10 +38,19 @@ class SessionHelperImpl(context: Context) : SessionHelper {
         prefs.edit().clear().apply()
     }
 
+    override fun setUserFirstQuiz(value: Boolean) {
+        prefs.edit().putBoolean(KEY_IS_USER_FIRST_QUIZ, value).apply()
+    }
+
+    override fun isUserFirstQuiz(): Boolean {
+        return prefs.getBoolean(KEY_IS_USER_FIRST_QUIZ, true)
+    }
+
     companion object {
         const val PREFS_NAME = "aptasari_prefs"
         const val KEY_USER_ID = "KEY_USER_ID"
         const val KEY_USERNAME = "KEY_USERNAME"
         const val KEY_USER_EMAIL = "KEY_USER_EMAIL"
+        const val KEY_IS_USER_FIRST_QUIZ = "IS_USER_FIRST_QUIZ"
     }
 }

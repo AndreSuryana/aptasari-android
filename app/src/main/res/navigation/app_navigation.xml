@@ -80,6 +80,9 @@
         <action
             android:id="@+id/navigateToTarget"
             app:destination="@id/targetFragment" />
+        <action
+            android:id="@+id/navigateToQuiz"
+            app:destination="@id/quizFragment" />
     </fragment>
     <fragment
         android:id="@+id/targetFragment"
@@ -95,6 +98,10 @@
         android:id="@+id/quizFragment"
         android:name="com.andresuryana.aptasari.ui.quiz.QuizFragment"
         android:label="fragment_quiz"
-        tools:layout="@layout/fragment_quiz" />
+        tools:layout="@layout/fragment_quiz" >
+        <argument
+            android:name="level_id"
+            app:argType="string" />
+    </fragment>
 
 </navigation>
