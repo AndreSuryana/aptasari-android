@@ -26,8 +26,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(firebase: FirebaseSource, session: SessionHelper): UserRepository =
-        UserRepositoryImpl(firebase, session)
+    fun provideUserRepository(firebase: FirebaseSource, session: SessionHelper, local: LocalDatabase): UserRepository =
+        UserRepositoryImpl(firebase, session, local)
 
     @Provides
     @Singleton
