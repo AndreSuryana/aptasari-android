@@ -12,8 +12,8 @@ import com.andresuryana.aptasari.data.source.local.DatabaseContract.UserConfigTa
 )
 data class UserConfigEntity(
 
-    @PrimaryKey
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long,
 
     @ColumnInfo(name = UserConfigTable.COLUMN_USER_ID)
     val userId: String,

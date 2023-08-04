@@ -6,6 +6,7 @@ import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.data.model.User
 import com.andresuryana.aptasari.data.source.firebase.FirebaseSource
 import com.andresuryana.aptasari.data.source.local.LocalDatabase
+import com.andresuryana.aptasari.data.source.local.entity.UserConfigEntity
 import com.andresuryana.aptasari.data.source.prefs.SessionHelper
 import com.andresuryana.aptasari.util.Resource
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -21,6 +22,7 @@ class UserRepositoryImpl(
             val user = firebase.login(email, password)
             user?.let {
                 session.setCurrentUser(it.id, it.username, it.email)
+                local.userConfigDao().insert(UserConfigEntity(0, it.id!!, false))
             }
             Resource.Success(user)
         } catch (e: FirebaseAuthInvalidUserException) {
