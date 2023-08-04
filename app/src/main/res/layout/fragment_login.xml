@@ -11,6 +11,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"
+        android:background="?selectableItemBackground"
         android:contentDescription="@string/btn_back"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,8 +82,8 @@
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:hint="@string/label_email" />
+                    android:hint="@string/label_email"
+                    android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

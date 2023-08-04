@@ -1,60 +1,124 @@
 package com.andresuryana.aptasari.ui.profile
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.andresuryana.aptasari.R
+import com.andresuryana.aptasari.databinding.FragmentProfileBinding
+import com.andresuryana.aptasari.databinding.ItemSettingBinding
+import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
+import com.andresuryana.aptasari.worker.TargetAlarmHelper.cancelLearningTargetAlarm
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel by viewModels<ProfileViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        _binding = FragmentProfileBinding.inflate(layoutInflater)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Inflate menu
+        inflateMenu()
+
+        // Observe ui state
+        observeUiState()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding
+    }
+
+    private fun inflateMenu() {
+        // Loop through menu item in the parent layout
+        SettingMenu.values().forEach { menu ->
+            // Add menu into menu container
+            val itemMenuView = ItemSettingBinding.inflate(layoutInflater)
+
+            // Set menu data
+            itemMenuView.ivIcon.setImageResource(menu.icon)
+            itemMenuView.tvTitle.setText(menu.title)
+
+            // Set click listener
+            itemMenuView.root.setOnClickListener { onMenuItemClickListener(menu) }
+
+            // Add menu into menu container
+            binding.menuContainer.addView(itemMenuView.root)
+        }
+    }
+
+    private fun onMenuItemClickListener(menu: SettingMenu) {
+        when (menu) {
+            SettingMenu.ACCOUNT -> {
+                Toast.makeText(context, "Pengaturan Akun", Toast.LENGTH_SHORT).show()
+            }
+            SettingMenu.ADDRESS -> {
+                Toast.makeText(context, "Alamat", Toast.LENGTH_SHORT).show()
+            }
+            SettingMenu.LEARNING_TARGET -> {
+                Toast.makeText(context, "Notifikasi Target Belajar", Toast.LENGTH_SHORT).show()
+            }
+            SettingMenu.LOGOUT -> {
+                viewModel.logout()
+            }
+        }
+    }
+
+    private fun observeUiState() {
+        // Error
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isError.collectLatest { messagePair ->
+                    withContext(Dispatchers.Main) {
+                        showSnackbarError(messagePair)
+                    }
                 }
             }
+        }
+
+        // Register Action
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.logoutAction.collectLatest {
+                    withContext(Dispatchers.Main) {
+                        // Make sure disable alarm work manager if user logged out
+                        cancelLearningTargetAlarm(requireContext())
+
+                        // Navigate to on boarding fragment
+                        val options = NavOptions.Builder()
+                            .setLaunchSingleTop(true)
+                            .setPopUpTo(R.id.app_navigation, true)
+                            .build()
+                        findNavController().navigate(R.id.onboardingFragment, null, options)
+                    }
+                }
+            }
+        }
     }
 }
