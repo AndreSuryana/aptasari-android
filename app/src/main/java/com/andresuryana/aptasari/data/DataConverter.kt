@@ -19,10 +19,18 @@ object DataConverter {
     }
 
     fun AnswerEntity.toAnswer(): Answer {
-        return Answer(id, QuizType.fromId(type), title, textAnswer, audioPath)
+        return Answer(id, QuizType.fromId(type), questionId, isCorrect, title, textAnswer, audioPath)
     }
 
     fun QuestionEntity.toQuestion(answers: List<AnswerEntity>): Question {
         return Question(id, QuizType.fromId(type), title, textQuestion, audioPath, levelId, answers.map { it.toAnswer() })
+    }
+
+    fun Answer.toAnswerEntity(): AnswerEntity {
+        return AnswerEntity(id, type?.id!!, questionId!!, isCorrect == true, title, textAnswer, audioPath)
+    }
+
+    fun Question.toQuestionEntity(): QuestionEntity {
+        return QuestionEntity(id, type?.id!!, title, textQuestion, audioPath, levelId)
     }
 }

@@ -26,6 +26,7 @@ object DatabaseContract {
         const val TABLE_NAME = "answer_table"
         const val COLUMN_TYPE = "type"
         const val COLUMN_QUESTION_ID = "question_id"
+        const val COLUMN_IS_CORRECT = "is_correct"
         const val COLUMN_TITLE = "title"
         const val COLUMN_TEXT_ANSWER = "text_answer"
         const val COLUMN_AUDIO_PATH = "audio_path"

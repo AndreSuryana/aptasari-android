@@ -17,6 +17,9 @@ data class AnswerEntity(
     @ColumnInfo(name = AnswerTable.COLUMN_QUESTION_ID)
     val questionId: String,
 
+    @ColumnInfo(name = AnswerTable.COLUMN_IS_CORRECT)
+    val isCorrect: Boolean,
+
     @ColumnInfo(name = AnswerTable.COLUMN_TITLE)
     val title: String,
 
