@@ -27,4 +27,6 @@ object Ext {
             }
         }
     }
+
+    fun Long.toMinutes(): Long = this / 60_000
 }

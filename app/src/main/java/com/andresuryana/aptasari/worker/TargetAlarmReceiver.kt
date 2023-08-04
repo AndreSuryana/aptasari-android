@@ -11,6 +11,7 @@ import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.data.source.local.entity.UserConfigEntity
 import com.andresuryana.aptasari.di.AppModule
 import com.andresuryana.aptasari.util.Ext.goAsync
+import com.andresuryana.aptasari.util.Ext.toMinutes
 import com.google.firebase.auth.FirebaseAuth
 
 class TargetAlarmReceiver : BroadcastReceiver() {
@@ -41,11 +42,16 @@ class TargetAlarmReceiver : BroadcastReceiver() {
 
     private fun showNotification(context: Context?, targetDuration: Long?) {
         if (context != null && targetDuration != null) {
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             // Create notification channel
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+                val channel = NotificationChannel(
+                    CHANNEL_ID,
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_HIGH
+                )
                 notificationManager.createNotificationChannel(channel)
             }
 
@@ -53,7 +59,12 @@ class TargetAlarmReceiver : BroadcastReceiver() {
             val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setContentTitle(context.getString(R.string.notif_title_learning_target))
-                .setContentText(context.getString(R.string.notif_subtitle_learning_target, targetDuration.toString()))
+                .setContentText(
+                    context.getString(
+                        R.string.notif_subtitle_learning_target,
+                        targetDuration.toMinutes().toString()
+                    )
+                )
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .build()
