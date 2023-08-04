@@ -60,7 +60,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_search"
-                    android:hint="@string/label_search" />
+                    android:hint="@string/label_search"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

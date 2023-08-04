@@ -1,9 +1,12 @@
 package com.andresuryana.aptasari.ui.level
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -58,6 +61,9 @@ class LevelFragment : Fragment() {
         // Setup adapter
         setupLevelAdapter()
 
+        // Setup search bar
+        setupSearchBar()
+
         // Observe ui state
         observeUiState()
     }
@@ -81,6 +87,28 @@ class LevelFragment : Fragment() {
                 flexWrap = FlexWrap.WRAP
             }
         }
+    }
+
+    private fun setupSearchBar() {
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                levelAdapter.filter.filter(binding.etSearch.text)
+                true
+            } else false
+        }
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                levelAdapter.filter.filter(s)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Do nothing
+            }
+        })
     }
 
     private fun observeUiState() {
@@ -121,8 +149,9 @@ class LevelFragment : Fragment() {
 
         // If first time navigate to quiz fragment, show target fragment first
         // then continue if target is selected
-        val direction = if (session.isUserFirstQuiz()) LevelFragmentDirections.navigateToTarget(level.id)
-        else LevelFragmentDirections.navigateToQuiz(level.id)
+        val direction =
+            if (session.isUserFirstQuiz()) LevelFragmentDirections.navigateToTarget(level.id)
+            else LevelFragmentDirections.navigateToQuiz(level.id)
         findNavController().navigate(direction)
     }
 
