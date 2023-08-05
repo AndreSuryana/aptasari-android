@@ -17,10 +17,10 @@ class QuizRepositoryImpl(private val local: LocalDatabase) : QuizRepository {
         }
     }
 
-    override suspend fun fetchQuestionByLevel(level: Level): Resource<List<Question>> {
+    override suspend fun fetchQuestionByLevel(levelId: String): Resource<List<Question>> {
         return try {
             Resource.Success(
-                local.questionDao().getQuestionByLevelId(level.id).map {
+                local.questionDao().getQuestionByLevelId(levelId).map {
                     val answers = local.answerDao().getAnswerByQuestionId(it.id)
                     it.toQuestion(answers)
                 }

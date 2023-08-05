@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <!-- Audio -->
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_play_audio"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_volume"
+                    android:tint="@color/primary"
+                    android:visibility="gone"
+                    app:tint="@color/primary" />
+
+                <!-- Text -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_label_"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Audio -->
+        <!-- TODO: Not yet implemented or not needed! -->
+
+        <!-- Text -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_answer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.google.android.material.card.MaterialCardView>

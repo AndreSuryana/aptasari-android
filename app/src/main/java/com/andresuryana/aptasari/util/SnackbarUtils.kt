@@ -11,6 +11,13 @@ object SnackbarUtils {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
     }
 
+    fun Fragment.showSnackbar(messagePair: Pair<Int?, String?>) {
+        val message = if (messagePair.first != null) getString(messagePair.first!!)
+        else if (messagePair.second != null) messagePair.second!!
+        else return
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
+    }
+
     fun Fragment.showSnackbarError(messagePair: Pair<Int?, String?>) {
         val message = if (messagePair.first != null) getString(messagePair.first!!)
         else if (messagePair.second != null) messagePair.second!!

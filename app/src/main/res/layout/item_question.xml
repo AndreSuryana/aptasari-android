@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Audio Player -->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/audio_player_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_play_audio"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_volume"
+            android:tint="@color/primary"
+            app:tint="@color/primary" />
+
+        <com.andresuryana.aptasari.ui.component.WaveformView
+            android:layout_width="0dp"
+            android:layout_height="48dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <!-- Text Question -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <!-- Answers -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:isScrollContainer="false"
+        android:overScrollMode="never"
+        android:paddingVertical="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_answer" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

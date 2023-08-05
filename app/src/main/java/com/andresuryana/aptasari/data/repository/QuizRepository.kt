@@ -8,5 +8,5 @@ interface QuizRepository {
 
     suspend fun fetchLevels(): Resource<List<Level>>
 
-    suspend fun fetchQuestionByLevel(level: Level): Resource<List<Question>>
+    suspend fun fetchQuestionByLevel(levelId: String): Resource<List<Question>>
 }

@@ -20,6 +20,9 @@
     <string name="title_address">Alamat</string>
     <string name="title_learning_target">Notifikasi Target Belajar</string>
     <string name="title_logout">Keluar</string>
+    <string name="title_quiz_text">Jawab pertanyaan ini</string>
+    <string name="title_quiz_audio">Dengarkan suara ini</string>
+    <string name="title_quiz_result">Selamat</string>
 
     <!-- Subtitle -->
     <string name="subtitle_onboarding">Saking Tuhu Manah Guru\nKaweruhin Luir Senjata</string>
@@ -28,6 +31,7 @@
     <string name="subtitle_forgot_password" tools:ignore="TypographyEllipsis">Jangan khawatir yaa,\nKamu masih bisa mengubah password.\nSilahkan masukkan akun emailmu yang tertaut dengan akun Aptasari yaa...</string>
     <string name="subtitle_forgot_password_email_sent">Silahkan lakukan reset password melalui link yang telah dikirimkan ke emailmu</string>
     <string name="subtitle_learning_target">Pilih target belajarmu, kamu bisa merubah target ini lagi nanti</string>
+    <string name="subtitle_quiz_result">Kamu telah menyelesaikan level ini. Kamu telah menjawab %d dengan benar dari %d soal lho..</string>
 
     <!-- Label -->
     <string name="label_username">Username</string>
@@ -41,6 +45,7 @@
     <string name="btn_login_google">Google</string>
     <string name="btn_register">Register</string>
     <string name="btn_continue" tools:ignore="TypographyEllipsis">Lanjut...</string>
+    <string name="btn_continue_quiz">Lanjutkan</string>
     <string name="btn_forgot_password">Lupa password?</string>
     <string name="btn_back">Back</string>
     <string name="btn_send">Kirim</string>
@@ -79,6 +84,7 @@
     <string name="error_user_not_found">Akun tidak ditemukan atau belum terdaftar!</string>
     <string name="error_send_forgot_password_email">Gagal mengirim email! Mohon periksa email atau coba kembali</string>
     <string name="error_email_not_verified">Mohon verifikasi email sebelum melanjutkan</string>
+    <string name="error_quiz_no_selected_answer">Pilih jawaban kamu terlebih dahulu</string>
 
     <!-- Notification -->
     <string name="notif_title_learning_target">Target Belajar</string>
@@ -87,5 +93,12 @@
     <!-- Others -->
     <string name="question_have_account">Belum punya akun?</string>
     <string name="question_logout">Yakin ingin keluar dari akun ini?</string>
+    <string name="timer_default">00:00</string>
+    <string name="btn_check">Periksa</string>
+    <string name="btn_checking">Memeriksa</string>
+    <string name="btn_wrong_answer">Salah</string>
+    <string name="btn_correct_answer">Benar</string>
+    <string name="btn_end_quiz">Selesai</string>
+    <string name="btn_back_to_level">Kembali ke Level</string>
 
 </resources>
