@@ -26,6 +26,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "BASE_URL", "\"${getProperty('BASE_URL')}\"")
+            buildConfigField("String", "API_KEY", "\"${getProperty('API_KEY')}\"")
+        }
+
+        debug {
+            buildConfigField("String", "BASE_URL", "\"${getProperty('BASE_URL')}\"")
+            buildConfigField("String", "API_KEY", "\"${getProperty('API_KEY')}\"")
         }
     }
 
@@ -40,6 +47,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 
@@ -64,6 +72,8 @@ ext {
     hiltVersion = "2.44"
 
     gsonVersion = "2.9.0"
+
+    retrofitVersion = "2.9.0"
 }
 
 dependencies {
@@ -101,4 +111,8 @@ dependencies {
 
     // Gson
     implementation "com.google.code.gson:gson:$gsonVersion"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 }

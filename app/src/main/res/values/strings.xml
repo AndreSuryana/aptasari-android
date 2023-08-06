@@ -23,6 +23,14 @@
     <string name="title_quiz_text">Jawab pertanyaan ini</string>
     <string name="title_quiz_audio">Dengarkan suara ini</string>
     <string name="title_quiz_result">Selamat</string>
+    <string name="title_checking_updates">Memeriksa pembaruan data</string>
+    <string name="title_app_launch">Launching the application</string>
+    <string name="title_updating_data">Memperbarui data</string>
+    <string name="title_populating_data">Menyimpan data baru</string>
+    <string name="title_failed_check_update">Gagal untuk memeriksa pembaruan</string>
+    <string name="title_recheck_updates">Memeriksa kembali pembaruan data</string>
+    <string name="title_populate_success">Berhasil menambahkan data baru</string>
+    <string name="title_populate_error">Gagal menambahkan data baru</string>
 
     <!-- Subtitle -->
     <string name="subtitle_onboarding">Saking Tuhu Manah Guru\nKaweruhin Luir Senjata</string>

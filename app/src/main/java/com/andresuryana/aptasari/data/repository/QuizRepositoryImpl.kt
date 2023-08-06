@@ -4,10 +4,12 @@ import com.andresuryana.aptasari.data.DataConverter.toLevel
 import com.andresuryana.aptasari.data.DataConverter.toQuestion
 import com.andresuryana.aptasari.data.model.Level
 import com.andresuryana.aptasari.data.model.Question
+import com.andresuryana.aptasari.data.model.QuizData
 import com.andresuryana.aptasari.data.source.local.LocalDatabase
+import com.andresuryana.aptasari.data.source.remote.ApiService
 import com.andresuryana.aptasari.util.Resource
 
-class QuizRepositoryImpl(private val local: LocalDatabase) : QuizRepository {
+class QuizRepositoryImpl(private val local: LocalDatabase, private val remote: ApiService) : QuizRepository {
 
     override suspend fun fetchLevels(): Resource<List<Level>> {
         return try {
@@ -28,5 +30,9 @@ class QuizRepositoryImpl(private val local: LocalDatabase) : QuizRepository {
         } catch (e: Exception) {
             Resource.Error(e.message)
         }
+    }
+
+    override suspend fun fetchQuizData(): QuizData {
+        return remote.getQuizData()
     }
 }

@@ -1,21 +1,23 @@
 package com.andresuryana.aptasari.ui.splash
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.andresuryana.aptasari.data.source.prefs.SessionHelper
 import com.andresuryana.aptasari.databinding.FragmentSplashBinding
+import com.andresuryana.aptasari.util.DataVersionHelper
+import com.andresuryana.aptasari.util.SplashProgress
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,8 +26,12 @@ class SplashFragment : Fragment() {
     private var _binding: FragmentSplashBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel by viewModels<SplashViewModel>()
+
     @Inject
     lateinit var session: SessionHelper
+
+    private lateinit var versionHelper: DataVersionHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,23 +39,25 @@ class SplashFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentSplashBinding.inflate(inflater)
+
+        // Init data version helper
+        versionHelper = DataVersionHelper(requireContext().applicationContext)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Start animate the progress bar
-        startProgressBarAnim()
+        // Setup progress bar
+        binding.progressBar.max = SplashProgress.values().size
 
-        // Navigate to next fragment after some delay
-        CoroutineScope(Dispatchers.IO).launch {
-            delay(3000L)
-            withContext(Dispatchers.Main) {
-                navigateNextFragment()
-            }
-            cancel()
-        }
+        // Check for updates
+        val localDataVersion = versionHelper.getDataVersion()
+        viewModel.checkForUpdates(localDataVersion)
+
+        // Observe ui state
+        observeUiState()
     }
 
     override fun onDestroyView() {
@@ -57,10 +65,25 @@ class SplashFragment : Fragment() {
         _binding = null
     }
 
-    private fun startProgressBarAnim() {
-        ObjectAnimator.ofInt(binding.progressBar, "progress", 0, 100).apply {
-            duration = 1500L
-            start()
+    private fun observeUiState() {
+        // Progress
+        viewModel.progress.observe(viewLifecycleOwner) { progress ->
+            Log.d("SplashFragment", "ordinal=${progress.ordinal}, name=${progress.name}, size=${SplashProgress.values().size}")
+            binding.progressBar.progress = progress.ordinal + 1
+            binding.tvProgressText.setText(progress.text)
+
+            if (progress == SplashProgress.APP_LAUNCH) {
+                navigateNextFragment()
+            }
+        }
+
+        // Action Data Update
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.actionDataUpdated.collectLatest { newDataVersion ->
+                    versionHelper.setDataVersion(newDataVersion)
+                }
+            }
         }
     }
 

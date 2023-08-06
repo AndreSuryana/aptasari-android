@@ -18,11 +18,18 @@
         android:id="@+id/progress_bar"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="48dp"
         android:max="100"
         android:progress="0"
         app:indicatorColor="@color/primary"
         app:trackCornerRadius="8dp"
         app:trackThickness="8dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_progress_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
