@@ -24,7 +24,7 @@
     <string name="title_quiz_audio">Dengarkan suara ini</string>
     <string name="title_quiz_result">Selamat</string>
     <string name="title_checking_updates">Memeriksa pembaruan data</string>
-    <string name="title_app_launch">Launching the application</string>
+    <string name="title_app_launch">Memulai aplikasi</string>
     <string name="title_updating_data">Memperbarui data</string>
     <string name="title_populating_data">Menyimpan data baru</string>
     <string name="title_failed_check_update">Gagal untuk memeriksa pembaruan</string>
@@ -95,7 +95,7 @@
     <string name="error_quiz_no_selected_answer">Pilih jawaban kamu terlebih dahulu</string>
 
     <!-- Notification -->
-    <string name="notif_title_learning_target">Target Belajar</string>
+    <string name="notif_title_learning_target">Ayo Belajar Sekarang!</string>
     <string name="notif_subtitle_learning_target">Kamu belum memenuhi target belajarmu selama %s menit per hari!</string>
 
     <!-- Others -->
