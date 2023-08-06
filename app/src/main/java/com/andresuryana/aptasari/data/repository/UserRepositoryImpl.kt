@@ -55,6 +55,7 @@ class UserRepositoryImpl(
         return try {
             firebase.logout()
             session.clearSession()
+            local.userConfigDao().deleteAll()
             Resource.Success(true)
         } catch (e: Exception) {
             Resource.Error(e.message)
