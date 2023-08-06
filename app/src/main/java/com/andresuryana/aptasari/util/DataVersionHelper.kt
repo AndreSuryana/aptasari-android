@@ -11,19 +11,20 @@ class DataVersionHelper(context: Context) {
      * Check update with comparing last update timestamp from original source,
      * with current update timestamp in the local prefs
      */
-    fun isAnyUpdate(sourceLastUpdateTimestamp: Long): Boolean {
+    fun isAnyUpdate(sourceDataVersion: Long): Boolean {
         // Get current last update timestamp
-        val currentLastUpdateTimestamp = prefs.getLong(KEY_LAST_UPDATE_TIMESTAMP, -1)
+        val localDataVersion = prefs.getLong(KEY_DATA_VERSION, -1L)
 
-        // Update the value with source last update
-        prefs.edit().putLong(KEY_LAST_UPDATE_TIMESTAMP, sourceLastUpdateTimestamp).apply()
-
-        return if (currentLastUpdateTimestamp == -1L) true
-        else currentLastUpdateTimestamp != sourceLastUpdateTimestamp && currentLastUpdateTimestamp < sourceLastUpdateTimestamp
+        return if (localDataVersion == -1L) {
+            // Put data if there is data version not found
+            prefs.edit().putLong(KEY_DATA_VERSION, sourceDataVersion).apply()
+            true
+        }
+        else localDataVersion != sourceDataVersion && localDataVersion < sourceDataVersion
     }
 
     companion object {
-        private const val PREFS_NAME = "data_version"
-        private const val KEY_LAST_UPDATE_TIMESTAMP = "last_update_timestamp"
+        private const val PREFS_NAME = "app_data"
+        private const val KEY_DATA_VERSION = "data_version"
     }
 }

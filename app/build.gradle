@@ -62,6 +62,8 @@ ext {
     firebaseBoMVersion = "32.2.0"
 
     hiltVersion = "2.44"
+
+    gsonVersion = "2.9.0"
 }
 
 dependencies {
@@ -96,4 +98,7 @@ dependencies {
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+
+    // Gson
+    implementation "com.google.code.gson:gson:$gsonVersion"
 }
