@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.data.model.Question
 import com.andresuryana.aptasari.databinding.ItemQuestionBinding
 import com.andresuryana.aptasari.util.QuizType
@@ -30,7 +31,9 @@ class QuestionAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(question: Question) {
             // Set title
-            binding.tvTitle.text = question.title
+            binding.tvTitle.text = question.title ?:
+                if (question.type == QuizType.AUDIO) itemView.context.getString(R.string.title_quiz_audio)
+                else itemView.context.getString(R.string.title_quiz_text)
 
             // Current question type
             when (question.type) {

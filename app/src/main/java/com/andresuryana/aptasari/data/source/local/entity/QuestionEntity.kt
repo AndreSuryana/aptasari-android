@@ -15,7 +15,7 @@ data class QuestionEntity(
     val type: Int,
 
     @ColumnInfo(name = QuestionTable.COLUMN_TITLE)
-    val title: String,
+    val title: String?,
 
     @ColumnInfo(name = QuestionTable.COLUMN_TEXT_QUESTION)
     val textQuestion: String?,
