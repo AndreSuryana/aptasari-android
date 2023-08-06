@@ -56,14 +56,19 @@ class TargetAlarmReceiver : BroadcastReceiver() {
             }
 
             // Create notification
+            val contentTitle = context.getString(R.string.notif_title_learning_target)
+            val contentMessage = context.getString(
+                R.string.notif_subtitle_learning_target,
+                targetDuration.toMinutes().toString()
+            )
             val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_alarm)
-                .setContentTitle(context.getString(R.string.notif_title_learning_target))
-                .setContentText(
-                    context.getString(
-                        R.string.notif_subtitle_learning_target,
-                        targetDuration.toMinutes().toString()
-                    )
+                .setContentTitle(contentTitle)
+                .setContentText(contentMessage)
+                .setStyle(
+                    NotificationCompat.BigTextStyle()
+                        .setBigContentTitle(contentTitle)
+                        .setBigContentTitle(contentMessage)
                 )
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
