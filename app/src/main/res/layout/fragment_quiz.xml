@@ -50,16 +50,71 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/question_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
-        android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@+id/btn_check"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_check"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_container" />
+        app:layout_constraintTop_toBottomOf="@id/header_container">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Audio Player -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/audio_player_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_play_audio"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_volume"
+                android:tint="@color/primary"
+                app:tint="@color/primary" />
+
+            <com.andresuryana.aptasari.ui.component.WaveformView
+                android:layout_width="0dp"
+                android:layout_height="48dp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <!-- Text Question -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <!-- Answers -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:isScrollContainer="false"
+            android:overScrollMode="never"
+            android:paddingVertical="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_answer" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_empty_data"

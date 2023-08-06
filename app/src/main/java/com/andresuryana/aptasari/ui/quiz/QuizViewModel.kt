@@ -31,6 +31,9 @@ class QuizViewModel @Inject constructor(
     private var _questions = MutableLiveData<List<Question>>()
     val questions: LiveData<List<Question>> = _questions
 
+    private var _currentQuestion = MutableLiveData<Question>()
+    val currentQuestion: LiveData<Question> = _currentQuestion
+
     private val _isError = MutableSharedFlow<Pair<Int?, String?>>()
     val isError = _isError.asSharedFlow()
 
@@ -62,10 +65,21 @@ class QuizViewModel @Inject constructor(
                 is Resource.Success -> {
                     _questions.postValue(result.data ?: emptyList())
                     _quizResult.totalQuestion = result.data?.size ?: 0
+
+                    // Set first question if data not null
+                    if (result.data != null) {
+                        _currentQuestion.postValue(result.data.first())
+                    }
                 }
 
                 is Resource.Error -> _isError.emit(Pair(result.messageRes, result.message))
             }
+        }
+    }
+
+    fun getCurrentQuestion() {
+        if (_questions.value != null) {
+            _currentQuestion.value = _questions.value?.get(_currentQuestionIndex.value!!)
         }
     }
 

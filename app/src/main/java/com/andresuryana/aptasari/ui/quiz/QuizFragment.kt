@@ -12,12 +12,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.adapter.AnswerAdapter
-import com.andresuryana.aptasari.adapter.QuestionAdapter
 import com.andresuryana.aptasari.data.model.Answer
+import com.andresuryana.aptasari.data.model.Question
 import com.andresuryana.aptasari.databinding.FragmentQuizBinding
+import com.andresuryana.aptasari.util.QuizType
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbar
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +36,6 @@ class QuizFragment : Fragment() {
 
     private val viewModel by viewModels<QuizViewModel>()
 
-    private lateinit var questionAdapter: QuestionAdapter
     private lateinit var answerAdapter: AnswerAdapter
 
     private var levelId: String? = null
@@ -58,9 +58,8 @@ class QuizFragment : Fragment() {
             viewModel.getQuestions(it)
         }
 
-        // Setup view pager adapter, init adapter first important!
+        // Setup adapter
         setupAnswerAdapter()
-        setupPagerAdapter()
 
         // Setup button listener
         setupButtonListener()
@@ -78,16 +77,6 @@ class QuizFragment : Fragment() {
         if (answerAdapter.isItemClickable) {
             viewModel.selectedAnswer = answer
             answerAdapter.setSelectedItem(answer)
-        }
-    }
-
-    private fun setupPagerAdapter() {
-        // Setup view pager
-        questionAdapter = QuestionAdapter(answerAdapter)
-        binding.viewPager.apply {
-            adapter = questionAdapter
-            isUserInputEnabled = false
-            (getChildAt(0) as? RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
         }
     }
 
@@ -166,21 +155,65 @@ class QuizFragment : Fragment() {
 
         // Questions
         viewModel.questions.observe(viewLifecycleOwner) { questions ->
-            questionAdapter.submitList(questions)
             setUiStateEmptyLevel(questions.isEmpty())
             binding.progressBar.max = questions.size
         }
 
+        // Current question
+        viewModel.currentQuestion.observe(viewLifecycleOwner) { question ->
+            setCurrentQuestion(question)
+        }
+
         // Track current question
         viewModel.currentQuestionIndex.observe(viewLifecycleOwner) { index ->
-            binding.viewPager.currentItem = index
             binding.progressBar.progress = index + 1
+            viewModel.getCurrentQuestion()
         }
+    }
+
+    private fun setCurrentQuestion(question: Question) {
+        // Set title
+        binding.tvTitle.text = question.title ?:
+                if (question.type == QuizType.AUDIO) getString(R.string.title_quiz_audio)
+                else getString(R.string.title_quiz_text)
+
+        // Current question type
+        when (question.type) {
+            QuizType.TEXT -> setTextQuestion(question)
+            QuizType.AUDIO -> setAudioQuestion(question)
+            else -> Unit
+        }
+
+        // Setup adapter
+        answerAdapter.setRecyclerViewTarget(binding.rvAnswer)
+        answerAdapter.submitList(question.answers)
+        binding.rvAnswer.apply {
+            adapter = answerAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        }
+    }
+
+    private fun setTextQuestion(question: Question) {
+        // Update ui
+        binding.tvQuestion.visibility = View.VISIBLE
+        binding.audioPlayerContainer.visibility = View.GONE
+
+        // Set text question
+        binding.tvQuestion.text = question.textQuestion
+    }
+
+    private fun setAudioQuestion(question: Question) {
+        // Update ui
+        binding.tvQuestion.visibility = View.GONE
+        binding.audioPlayerContainer.visibility = View.VISIBLE
+
+        // Set audio question
+        // TODO: Setup audio player!
     }
 
     private fun setUiStateEmptyLevel(isEmpty: Boolean) {
         // Hide recycler view, and show empty icon
-        binding.viewPager.visibility = if (isEmpty) View.GONE else View.VISIBLE
+        binding.questionContainer.visibility = if (isEmpty) View.GONE else View.VISIBLE
         binding.ivEmptyData.visibility = if (isEmpty) View.VISIBLE else View.GONE
     }
 }
