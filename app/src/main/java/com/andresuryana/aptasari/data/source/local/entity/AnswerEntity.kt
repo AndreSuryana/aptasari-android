@@ -21,7 +21,7 @@ data class AnswerEntity(
     val isCorrect: Boolean,
 
     @ColumnInfo(name = AnswerTable.COLUMN_TITLE)
-    val title: String,
+    val title: String?,
 
     @ColumnInfo(name = AnswerTable.COLUMN_TEXT_ANSWER)
     val textAnswer: String?,
