@@ -46,8 +46,7 @@ class QuizFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        viewModel.startTimer()
+        viewModel.resumeTimer()
     }
 
     override fun onCreateView(
@@ -61,6 +60,9 @@ class QuizFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Start timer
+        viewModel.startTimer()
 
         // Get level id from arguments
         arguments?.getString("level_id")?.let {
@@ -80,11 +82,12 @@ class QuizFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding
+        _binding = null
     }
 
     override fun onStop() {
         super.onStop()
+        viewModel.pauseTimer()
         releaseMediaPlayer()
     }
 

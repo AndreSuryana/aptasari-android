@@ -62,6 +62,8 @@ class QuizViewModel @Inject constructor(
     private val _timer = MutableLiveData(0L)
     val timer: LiveData<Long> = _timer
 
+    private var isTimerPaused: Boolean = false
+
     data class QuizResult(
         var correctAnswer: Int = 0,
         var wrongAnswer: Int = 0,
@@ -110,9 +112,23 @@ class QuizViewModel @Inject constructor(
             timerJob = viewModelScope.launch {
                 while (true) {
                     delay(1000L)
-                    _timer.postValue(_timer.value?.plus(1000L))
+                    if (!isTimerPaused) _timer.postValue(_timer.value?.plus(1000L))
                 }
             }
+        }
+    }
+
+    fun pauseTimer() {
+        if (timerJob?.isActive == true && !isTimerPaused) {
+            isTimerPaused = true
+            timerJob?.cancel()
+        }
+    }
+
+    fun resumeTimer() {
+        if (isTimerPaused) {
+            isTimerPaused = false
+            startTimer()
         }
     }
 
