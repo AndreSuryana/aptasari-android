@@ -18,6 +18,7 @@ import com.andresuryana.aptasari.adapter.AnswerAdapter
 import com.andresuryana.aptasari.data.model.Answer
 import com.andresuryana.aptasari.data.model.Question
 import com.andresuryana.aptasari.databinding.FragmentQuizBinding
+import com.andresuryana.aptasari.util.Ext.formatTimer
 import com.andresuryana.aptasari.util.QuizType
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbar
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
@@ -39,6 +40,12 @@ class QuizFragment : Fragment() {
     private lateinit var answerAdapter: AnswerAdapter
 
     private var levelId: String? = null
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.startTimer()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -132,6 +139,9 @@ class QuizFragment : Fragment() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.actionDone.collectLatest { result ->
+                    // Stop the timer
+                    viewModel.stopTimer()
+
                     withContext(Dispatchers.Main) {
                         // Show alert dialog with total correct and wrong answer
                         AlertDialog.Builder(requireContext())
@@ -168,6 +178,11 @@ class QuizFragment : Fragment() {
         viewModel.currentQuestionIndex.observe(viewLifecycleOwner) { index ->
             binding.progressBar.progress = index + 1
             viewModel.getCurrentQuestion()
+        }
+
+        // Timer
+        viewModel.timer.observe(viewLifecycleOwner) { timer ->
+            binding.tvTimer.text = timer.formatTimer()
         }
     }
 

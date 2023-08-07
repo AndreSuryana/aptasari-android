@@ -29,4 +29,16 @@ object Ext {
     }
 
     fun Long.toMinutes(): Long = this / 60_000
+
+    fun Long.formatTimer(): String {
+        val hours = this / (60 * 60 * 1000)
+        val minutes = (this % (60 * 60 * 1000)) / (60 * 1000)
+        val seconds = (this % (60 * 1000)) / 1000
+
+        return if (hours > 0) {
+            String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            String.format("%02d:%02d", minutes, seconds)
+        }
+    }
 }

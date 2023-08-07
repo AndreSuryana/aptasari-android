@@ -8,6 +8,7 @@ import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.data.model.Answer
 import com.andresuryana.aptasari.data.model.Question
 import com.andresuryana.aptasari.data.repository.QuizRepository
+import com.andresuryana.aptasari.data.repository.UserRepository
 import com.andresuryana.aptasari.ui.quiz.QuizButtonState.CHECK
 import com.andresuryana.aptasari.ui.quiz.QuizButtonState.CHECKING
 import com.andresuryana.aptasari.ui.quiz.QuizButtonState.CONTINUE
@@ -15,8 +16,10 @@ import com.andresuryana.aptasari.ui.quiz.QuizButtonState.CORRECT
 import com.andresuryana.aptasari.ui.quiz.QuizButtonState.END
 import com.andresuryana.aptasari.ui.quiz.QuizButtonState.WRONG
 import com.andresuryana.aptasari.util.Resource
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -25,7 +28,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuizViewModel @Inject constructor(
-    private val quizRepository: QuizRepository
+    private val quizRepository: QuizRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private var _questions = MutableLiveData<List<Question>>()
@@ -53,11 +57,21 @@ class QuizViewModel @Inject constructor(
 
     var selectedAnswer: Answer? = null
 
+    private var timerJob: Job? = null
+
+    private val _timer = MutableLiveData(0L)
+    val timer: LiveData<Long> = _timer
+
     data class QuizResult(
         var correctAnswer: Int = 0,
         var wrongAnswer: Int = 0,
         var totalQuestion: Int = 0
     )
+
+    override fun onCleared() {
+        super.onCleared()
+        timerJob?.cancel()
+    }
 
     fun getQuestions(levelId: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -88,6 +102,31 @@ class QuizViewModel @Inject constructor(
             CONTINUE -> nextQuestion()
             END -> viewModelScope.launch { _actionDone.emit(_quizResult) }
             else -> checkAnswer()
+        }
+    }
+
+    fun startTimer() {
+        if (timerJob?.isActive != true) {
+            timerJob = viewModelScope.launch {
+                while (true) {
+                    delay(1000L)
+                    _timer.postValue(_timer.value?.plus(1000L))
+                }
+            }
+        }
+    }
+
+    fun stopTimer() {
+        viewModelScope.launch {
+            try {
+                FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+                    userRepository.updateUserPlayTime(userId, _timer.value ?: 0L)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                timerJob?.cancel()
+            }
         }
     }
 
