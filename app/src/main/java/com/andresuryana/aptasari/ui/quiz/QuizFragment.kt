@@ -1,5 +1,6 @@
 package com.andresuryana.aptasari.ui.quiz
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +42,8 @@ class QuizFragment : Fragment() {
 
     private var levelId: String? = null
 
+    private var mediaPlayer: MediaPlayer? = null
+
     override fun onResume() {
         super.onResume()
 
@@ -80,6 +83,11 @@ class QuizFragment : Fragment() {
         _binding
     }
 
+    override fun onStop() {
+        super.onStop()
+        releaseMediaPlayer()
+    }
+
     private fun onAnswerClickListener(answer: Answer) {
         if (answerAdapter.isItemClickable) {
             viewModel.selectedAnswer = answer
@@ -99,6 +107,14 @@ class QuizFragment : Fragment() {
         }
         binding.btnCheck.setOnClickListener {
             viewModel.buttonClicked()
+        }
+        binding.btnPlayAudio.setOnClickListener {
+            if (mediaPlayer?.isPlaying == false) {
+                mediaPlayer?.seekTo(0) // Reset duration
+                mediaPlayer?.start()
+            } else {
+                mediaPlayer?.pause()
+            }
         }
     }
 
@@ -136,6 +152,14 @@ class QuizFragment : Fragment() {
             // Only enable click listener on state CHECK
             // otherwise, disable click listener
             answerAdapter.isItemClickable = state == QuizButtonState.CHECK
+
+            // Check if state is CORRECT or WRONG
+            // pause playing audio
+            if ((state == QuizButtonState.CORRECT || state == QuizButtonState.WRONG)
+                && mediaPlayer?.isPlaying == true
+            ) {
+                mediaPlayer?.stop()
+            }
         }
 
         // Action Done
@@ -191,9 +215,9 @@ class QuizFragment : Fragment() {
 
     private fun setCurrentQuestion(question: Question) {
         // Set title
-        binding.tvTitle.text = question.title ?:
-                if (question.type == QuizType.AUDIO) getString(R.string.title_quiz_audio)
-                else getString(R.string.title_quiz_text)
+        binding.tvTitle.text = question.title
+            ?: if (question.type == QuizType.AUDIO) getString(R.string.title_quiz_audio)
+            else getString(R.string.title_quiz_text)
 
         // Current question type
         when (question.type) {
@@ -207,7 +231,8 @@ class QuizFragment : Fragment() {
         answerAdapter.submitList(question.answers)
         binding.rvAnswer.apply {
             adapter = answerAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
     }
 
@@ -218,6 +243,9 @@ class QuizFragment : Fragment() {
 
         // Set text question
         binding.tvQuestion.text = question.textQuestion
+
+        // Unset media player
+        mediaPlayer = null
     }
 
     private fun setAudioQuestion(question: Question) {
@@ -226,12 +254,27 @@ class QuizFragment : Fragment() {
         binding.audioPlayerContainer.visibility = View.VISIBLE
 
         // Set audio question
-        // TODO: Setup audio player!
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(question.audioPath)
+            prepare()
+        }
     }
 
     private fun setUiStateEmptyLevel(isEmpty: Boolean) {
         // Hide recycler view, and show empty icon
         binding.questionContainer.visibility = if (isEmpty) View.GONE else View.VISIBLE
         binding.ivEmptyData.visibility = if (isEmpty) View.VISIBLE else View.GONE
+    }
+
+    private fun releaseMediaPlayer() {
+        mediaPlayer?.apply {
+            if (isPlaying) {
+                pause()
+            }
+            stop()
+            reset()
+            release()
+        }
+        mediaPlayer = null
     }
 }
