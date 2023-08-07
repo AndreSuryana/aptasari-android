@@ -32,6 +32,10 @@
     <string name="title_populate_success">Berhasil menambahkan data baru</string>
     <string name="title_populate_error">Gagal menambahkan data baru</string>
     <string name="title_quiz_exit">Keluar dari Level</string>
+    <string name="title_download_files">Mengunduh file dari server</string>
+    <string name="title_download_files_process">Mengunduh file: %s (%s)</string>
+    <string name="title_download_files_completed">Semua file berhasil diunduh</string>
+    <string name="title_download_files_error">Gagal mengunduh file</string>
 
     <!-- Subtitle -->
     <string name="subtitle_onboarding">Saking Tuhu Manah Guru\nKaweruhin Luir Senjata</string>
@@ -42,6 +46,7 @@
     <string name="subtitle_learning_target">Pilih target belajarmu, kamu bisa merubah target ini lagi nanti</string>
     <string name="subtitle_quiz_result">Kamu telah menyelesaikan level ini. Kamu telah menjawab %d dengan benar dari %d soal lho..</string>
     <string name="subtitle_quiz_exit">Kamu yakin ingin keluar dari level ini? Sedikit lagi kamu bisa menyelesaikan level ini lho..</string>
+    <string name="subtitle_update_check_failed">Ups.. terjadi kesalahan saat melakukan pengecekan data. Ingin mengulanginya lagi?</string>
 
     <!-- Label -->
     <string name="label_username">Username</string>
@@ -63,6 +68,12 @@
     <string name="btn_positive">Iya</string>
     <string name="btn_negative">Batalkan</string>
     <string name="btn_save">Simpan</string>
+    <string name="btn_check">Periksa</string>
+    <string name="btn_checking">Memeriksa</string>
+    <string name="btn_wrong_answer">Salah</string>
+    <string name="btn_correct_answer">Benar</string>
+    <string name="btn_end_quiz">Selesai</string>
+    <string name="btn_back_to_level">Kembali ke Level</string>
 
     <!-- Learning Target -->
     <string name="target_title_relax">Santai</string>
@@ -104,11 +115,5 @@
     <string name="question_have_account">Belum punya akun?</string>
     <string name="question_logout">Yakin ingin keluar dari akun ini?</string>
     <string name="timer_default">00:00</string>
-    <string name="btn_check">Periksa</string>
-    <string name="btn_checking">Memeriksa</string>
-    <string name="btn_wrong_answer">Salah</string>
-    <string name="btn_correct_answer">Benar</string>
-    <string name="btn_end_quiz">Selesai</string>
-    <string name="btn_back_to_level">Kembali ke Level</string>
 
 </resources>

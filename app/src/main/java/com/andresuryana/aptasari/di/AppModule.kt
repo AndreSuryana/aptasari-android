@@ -14,6 +14,7 @@ import com.andresuryana.aptasari.data.source.local.LocalDatabase
 import com.andresuryana.aptasari.data.source.prefs.SessionHelper
 import com.andresuryana.aptasari.data.source.prefs.SessionHelperImpl
 import com.andresuryana.aptasari.data.source.remote.ApiService
+import com.andresuryana.aptasari.util.FileDownloader
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -60,4 +61,9 @@ object AppModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(ApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideFileDownloader(@ApplicationContext context: Context): FileDownloader =
+        FileDownloader(context.filesDir)
 }

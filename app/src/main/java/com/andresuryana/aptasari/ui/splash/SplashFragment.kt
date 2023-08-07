@@ -1,16 +1,17 @@
 package com.andresuryana.aptasari.ui.splash
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.data.source.prefs.SessionHelper
 import com.andresuryana.aptasari.databinding.FragmentSplashBinding
 import com.andresuryana.aptasari.util.DataVersionHelper
@@ -68,12 +69,34 @@ class SplashFragment : Fragment() {
     private fun observeUiState() {
         // Progress
         viewModel.progress.observe(viewLifecycleOwner) { progress ->
-            Log.d("SplashFragment", "ordinal=${progress.ordinal}, name=${progress.name}, size=${SplashProgress.values().size}")
-            binding.progressBar.progress = progress.ordinal + 1
-            binding.tvProgressText.setText(progress.text)
+            binding.progressBar.progress = progress.processStep
+            when {
+                progress == SplashProgress.APP_LAUNCH -> navigateNextFragment()
+                progress.isError -> {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.error_default)
+                        .setMessage(R.string.subtitle_update_check_failed)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.btn_positive) { _, _ ->
+                            viewModel.checkForUpdates(versionHelper.getDataVersion())
+                        }
+                        .setNegativeButton(R.string.btn_negative) { dialog, _ ->
+                            dialog.dismiss()
+                            activity?.finish()
+                        }
+                        .show()
+                }
 
-            if (progress == SplashProgress.APP_LAUNCH) {
-                navigateNextFragment()
+                else -> Unit
+            }
+        }
+
+        // Progress Text
+        viewModel.progressText.observe(viewLifecycleOwner) { textPair ->
+            if (textPair.second != null) {
+                binding.tvProgressText.text = textPair.second
+            } else {
+                binding.tvProgressText.setText(textPair.first)
             }
         }
 
