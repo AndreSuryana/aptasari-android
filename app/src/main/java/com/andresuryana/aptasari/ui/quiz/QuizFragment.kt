@@ -93,7 +93,10 @@ class QuizFragment : Fragment() {
     }
 
     private fun setupButtonListener() {
-        binding.btnBack.setOnClickListener { findNavController().popBackStack() }
+        binding.btnBack.setOnClickListener {
+            @Suppress("DEPRECATION")
+            activity?.onBackPressed()
+        }
         binding.btnCheck.setOnClickListener {
             viewModel.buttonClicked()
         }

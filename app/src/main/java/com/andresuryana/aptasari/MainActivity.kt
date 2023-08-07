@@ -2,6 +2,7 @@ package com.andresuryana.aptasari
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -76,6 +77,22 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val prev = navController.currentDestination
         val curr = navController.previousBackStackEntry?.destination
+
+        // Handle back pressed on quizFragment
+        if (prev?.id == R.id.quizFragment) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.title_quiz_exit)
+                .setMessage(R.string.subtitle_quiz_exit)
+                .setCancelable(false)
+                .setPositiveButton(R.string.btn_positive) { _, _ ->
+                    navController.popBackStack()
+                }
+                .setNegativeButton(R.string.btn_negative) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+            return
+        }
 
         // Check if current is fragmentLevel
         if (curr?.id == R.id.levelFragment) super.onBackPressed()

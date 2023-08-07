@@ -31,6 +31,7 @@
     <string name="title_recheck_updates">Memeriksa kembali pembaruan data</string>
     <string name="title_populate_success">Berhasil menambahkan data baru</string>
     <string name="title_populate_error">Gagal menambahkan data baru</string>
+    <string name="title_quiz_exit">Keluar dari Level</string>
 
     <!-- Subtitle -->
     <string name="subtitle_onboarding">Saking Tuhu Manah Guru\nKaweruhin Luir Senjata</string>
@@ -40,6 +41,7 @@
     <string name="subtitle_forgot_password_email_sent">Silahkan lakukan reset password melalui link yang telah dikirimkan ke emailmu</string>
     <string name="subtitle_learning_target">Pilih target belajarmu, kamu bisa merubah target ini lagi nanti</string>
     <string name="subtitle_quiz_result">Kamu telah menyelesaikan level ini. Kamu telah menjawab %d dengan benar dari %d soal lho..</string>
+    <string name="subtitle_quiz_exit">Kamu yakin ingin keluar dari level ini? Sedikit lagi kamu bisa menyelesaikan level ini lho..</string>
 
     <!-- Label -->
     <string name="label_username">Username</string>
