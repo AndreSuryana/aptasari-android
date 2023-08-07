@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <receiver android:name=".worker.TargetAlarmReceiver" />
+        <receiver android:name=".worker.ClearPlaytimeAlarmReceiver" />
     </application>
 
 </manifest>

@@ -17,7 +17,8 @@ import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.databinding.FragmentProfileBinding
 import com.andresuryana.aptasari.databinding.ItemSettingBinding
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
-import com.andresuryana.aptasari.worker.TargetAlarmHelper.cancelLearningTargetAlarm
+import com.andresuryana.aptasari.worker.AlarmManagerRunner
+import com.andresuryana.aptasari.worker.TargetAlarmReceiver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -119,7 +120,13 @@ class ProfileFragment : Fragment() {
                 viewModel.logoutAction.collectLatest {
                     withContext(Dispatchers.Main) {
                         // Make sure disable alarm work manager if user logged out
-                        cancelLearningTargetAlarm(requireContext())
+                        val alarmRunner = AlarmManagerRunner(
+                            requireContext(),
+                            TargetAlarmReceiver::class.java,
+                            AlarmManagerRunner.TIME_NOON,
+                            AlarmManagerRunner.ALARM_TARGET_LEARNING_REQUEST_CODE
+                        )
+                        alarmRunner.cancel()
 
                         // Navigate to on boarding fragment
                         val options = NavOptions.Builder()

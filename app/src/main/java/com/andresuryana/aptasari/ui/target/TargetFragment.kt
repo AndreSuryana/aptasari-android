@@ -15,7 +15,8 @@ import com.andresuryana.aptasari.databinding.FragmentTargetBinding
 import com.andresuryana.aptasari.di.AppModule
 import com.andresuryana.aptasari.util.LearningTarget
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbar
-import com.andresuryana.aptasari.worker.TargetAlarmHelper.startLearningTargetAlarm
+import com.andresuryana.aptasari.worker.AlarmManagerRunner
+import com.andresuryana.aptasari.worker.TargetAlarmReceiver
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -88,7 +89,17 @@ class TargetFragment : Fragment() {
                     true,
                     target.duration
                 )
-                startLearningTargetAlarm(requireContext())
+
+                // Start learning target alarm
+                val alarmRunner = AlarmManagerRunner(
+                    requireContext(),
+                    TargetAlarmReceiver::class.java,
+                    AlarmManagerRunner.TIME_NOON,
+                    AlarmManagerRunner.ALARM_TARGET_LEARNING_REQUEST_CODE
+                )
+                alarmRunner.start()
+
+                // Define this indicating the user already launch the first quiz
                 session.setUserFirstQuiz(false)
                 showSnackbar(R.string.success_set_target_alarm)
             }
