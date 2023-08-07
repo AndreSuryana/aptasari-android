@@ -14,6 +14,7 @@ object DatabaseContract {
     object QuestionTable {
 
         const val TABLE_NAME = "question_table"
+        const val COLUMN_ID = "id"
         const val COLUMN_TYPE = "type"
         const val COLUMN_TITLE = "title"
         const val COLUMN_TEXT_QUESTION = "text_question"

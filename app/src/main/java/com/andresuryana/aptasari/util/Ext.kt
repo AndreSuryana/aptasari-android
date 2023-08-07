@@ -41,4 +41,13 @@ object Ext {
             String.format("%02d:%02d", minutes, seconds)
         }
     }
+
+    fun String.removeFileExtension(): String {
+        val lastDotIndex = lastIndexOf('.')
+        return if (lastDotIndex >= 0) {
+            substring(0, lastDotIndex)
+        } else {
+            this
+        }
+    }
 }

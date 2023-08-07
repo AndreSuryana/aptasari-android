@@ -19,6 +19,9 @@ interface QuestionDao {
     @Query("SELECT * FROM ${QuestionTable.TABLE_NAME} WHERE ${QuestionTable.COLUMN_LEVEL_ID} = :levelId")
     suspend fun getQuestionByLevelId(levelId: String): List<QuestionEntity>
 
+    @Query("UPDATE ${QuestionTable.TABLE_NAME} SET ${QuestionTable.COLUMN_AUDIO_PATH} = :audioPath WHERE ${QuestionTable.COLUMN_ID} = :questionId")
+    suspend fun updateQuestionAudioPath(questionId: String, audioPath: String)
+
     @Query("DELETE FROM ${QuestionTable.TABLE_NAME}")
     suspend fun deleteAll()
 }

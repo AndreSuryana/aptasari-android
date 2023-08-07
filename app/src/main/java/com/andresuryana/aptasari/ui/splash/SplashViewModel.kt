@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.andresuryana.aptasari.data.model.QuizData
 import com.andresuryana.aptasari.data.repository.QuizRepository
 import com.andresuryana.aptasari.data.source.local.LocalDatabase
+import com.andresuryana.aptasari.util.Ext.removeFileExtension
 import com.andresuryana.aptasari.util.FileDownloader
 import com.andresuryana.aptasari.util.SplashProgress
 import com.andresuryana.aptasari.util.SplashProgress.APP_LAUNCH
@@ -126,8 +127,17 @@ class SplashViewModel @Inject constructor(
     }
 
     override fun onDownloadCompleted(files: List<File>) {
-        updateProgress(DOWNLOAD_FILES_COMPLETED)
-        endProcess()
+        viewModelScope.launch {
+            // Get question ids from filename by removing extension
+            files.forEach { file ->
+                val questionId = file.name.removeFileExtension()
+                local.questionDao().updateQuestionAudioPath(questionId, file.absolutePath)
+            }
+
+            // After done
+            updateProgress(DOWNLOAD_FILES_COMPLETED)
+            endProcess()
+        }
     }
 
     override fun onDownloadError(message: String?) {
