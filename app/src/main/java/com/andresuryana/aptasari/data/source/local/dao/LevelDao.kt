@@ -19,6 +19,9 @@ interface LevelDao {
     @Query("SELECT * FROM ${LevelTable.TABLE_NAME}")
     suspend fun getAllLevel(): List<LevelEntity>
 
+    @Query("UPDATE ${LevelTable.TABLE_NAME} SET ${LevelTable.COLUMN_ICON_PATH} = :iconPath WHERE ${LevelTable.COLUMN_ID} = :levelId")
+    suspend fun updateLevelIconPath(levelId: String, iconPath: String)
+
     @Query("DELETE FROM ${LevelTable.TABLE_NAME}")
     suspend fun deleteAll()
 }

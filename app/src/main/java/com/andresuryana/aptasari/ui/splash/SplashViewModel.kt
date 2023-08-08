@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.andresuryana.aptasari.data.model.QuizData
 import com.andresuryana.aptasari.data.repository.QuizRepository
 import com.andresuryana.aptasari.data.source.local.LocalDatabase
-import com.andresuryana.aptasari.util.Ext.removeFileExtension
 import com.andresuryana.aptasari.util.FileDownloader
+import com.andresuryana.aptasari.util.FileDownloader.Companion.getFilenameFromUrl
 import com.andresuryana.aptasari.util.SplashProgress
 import com.andresuryana.aptasari.util.SplashProgress.APP_LAUNCH
 import com.andresuryana.aptasari.util.SplashProgress.CHECKING_UPDATES
@@ -44,6 +44,10 @@ class SplashViewModel @Inject constructor(
     val actionDataUpdated = _actionDataUpdated.asSharedFlow()
 
     private var quizData: QuizData? = null
+
+    // Map for storing level & question <id, filename>
+    private val levelsMap = mutableMapOf<String, String>()
+    private val questionMap = mutableMapOf<String, String>()
 
     fun checkForUpdates(localDataVersion: Long) {
         viewModelScope.launch {
@@ -87,8 +91,13 @@ class SplashViewModel @Inject constructor(
                 delay(500L)
                 updateProgress(POPULATE_SUCCESS)
 
-                val links =
-                    quizData.questions.filter { it.audioPath != null }.map { it.audioPath!! }
+                // Get level images & question audio links
+                val links = mutableListOf<String>()
+                val imageLevelLinks = getImageLevelLinks(quizData)
+                val audioQuestionLinks = getAudioQuestionLinks(quizData)
+                links.addAll(imageLevelLinks)
+                links.addAll(audioQuestionLinks)
+
                 if (links.isNotEmpty()) {
                     downloadFiles(links)
                 } else {
@@ -98,6 +107,26 @@ class SplashViewModel @Inject constructor(
                 updateProgress(POPULATE_ERROR)
             }
         }
+    }
+
+    private fun getImageLevelLinks(quizData: QuizData): List<String> {
+        val links = mutableListOf<String>()
+        quizData.level.forEach {
+            links.add(it.iconPath)
+            levelsMap[it.id] = getFilenameFromUrl(it.iconPath)
+        }
+        return links
+    }
+
+    private fun getAudioQuestionLinks(quizData: QuizData): List<String> {
+        val links = mutableListOf<String>()
+        quizData.questions.forEach {
+            if (it.audioPath != null) {
+                links.add(it.audioPath)
+                questionMap[it.id] = getFilenameFromUrl(it.audioPath)
+            }
+        }
+        return links
     }
 
     private fun downloadFiles(links: List<String>) {
@@ -128,10 +157,20 @@ class SplashViewModel @Inject constructor(
 
     override fun onDownloadCompleted(files: List<File>) {
         viewModelScope.launch {
-            // Get question ids from filename by removing extension
             files.forEach { file ->
-                val questionId = file.name.removeFileExtension()
-                local.questionDao().updateQuestionAudioPath(questionId, file.absolutePath)
+                // Update icon path in level table
+                levelsMap.forEach { (levelId, filename) ->
+                    if (file.name.equals(filename)) {
+                        local.levelDao().updateLevelIconPath(levelId, file.absolutePath)
+                    }
+                }
+
+                // Update audio path in question table
+                questionMap.forEach { (questionId, filename) ->
+                    if (file.name.equals(filename)) {
+                        local.questionDao().updateQuestionAudioPath(questionId, file.absolutePath)
+                    }
+                }
             }
 
             // After done

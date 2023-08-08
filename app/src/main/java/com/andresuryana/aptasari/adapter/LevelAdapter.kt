@@ -1,6 +1,6 @@
 package com.andresuryana.aptasari.adapter
 
-import android.annotation.SuppressLint
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.andresuryana.aptasari.data.model.Level
 import com.andresuryana.aptasari.databinding.ItemLevelBinding
+import java.io.File
 
 class LevelAdapter : ListAdapter<Level, LevelAdapter.ViewHolder>(DIFF_CALLBACK), Filterable {
 
@@ -68,12 +69,11 @@ class LevelAdapter : ListAdapter<Level, LevelAdapter.ViewHolder>(DIFF_CALLBACK),
     inner class ViewHolder(private val binding: ItemLevelBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(level: Level) {
-            // Get icon resource
-            @SuppressLint("DiscouragedApi")
-            val iconId = itemView.context.resources.getIdentifier(level.iconResName, "drawable", itemView.context.packageName)
+            // Get icon from path
+            val imageUri = Uri.fromFile(File(level.iconPath))
 
             // Set text
-            binding.ivIcon.setImageResource(iconId)
+            binding.ivIcon.setImageURI(imageUri)
             binding.tvTitle.text = level.title
 
             // Set click listener

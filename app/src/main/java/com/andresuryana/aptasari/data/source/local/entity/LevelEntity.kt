@@ -14,6 +14,6 @@ data class LevelEntity(
     @ColumnInfo(LevelTable.COLUMN_TITLE)
     val title: String,
 
-    @ColumnInfo(LevelTable.COLUMN_ICON)
-    val iconResName: String
+    @ColumnInfo(LevelTable.COLUMN_ICON_PATH)
+    val iconPath: String
 )

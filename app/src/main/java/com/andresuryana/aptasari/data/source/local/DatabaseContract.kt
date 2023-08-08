@@ -7,8 +7,9 @@ object DatabaseContract {
     object LevelTable {
 
         const val TABLE_NAME = "level_table"
+        const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
-        const val COLUMN_ICON = "icon"
+        const val COLUMN_ICON_PATH = "icon_path"
     }
 
     object QuestionTable {

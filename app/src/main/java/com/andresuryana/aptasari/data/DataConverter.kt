@@ -14,7 +14,7 @@ object DataConverter {
         return Level(
             this.id,
             this.title,
-            this.iconResName
+            this.iconPath
         )
     }
 

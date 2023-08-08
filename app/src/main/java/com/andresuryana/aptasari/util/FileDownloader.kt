@@ -105,17 +105,19 @@ class FileDownloader(private val filesDir: File) {
         }
     }
 
-    private fun getFilenameFromUrl(url: String): String {
-        var decodedUrl = URLDecoder.decode(url, "UTF-8")
-        if (decodedUrl.contains("?")) {
-            decodedUrl = decodedUrl.substringBeforeLast("?")
-        }
-        return decodedUrl.substringAfterLast("/")
-    }
-
     interface DownloadCallback {
         fun onDownloadProgress(progress: Long, filename: String)
         fun onDownloadCompleted(files: List<File>)
         fun onDownloadError(message: String?)
+    }
+
+    companion object {
+        fun getFilenameFromUrl(url: String): String {
+            var decodedUrl = URLDecoder.decode(url, "UTF-8")
+            if (decodedUrl.contains("?")) {
+                decodedUrl = decodedUrl.substringBeforeLast("?")
+            }
+            return decodedUrl.substringAfterLast("/")
+        }
     }
 }
