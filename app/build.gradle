@@ -28,11 +28,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "BASE_URL", "\"${getProperty('BASE_URL')}\"")
             buildConfigField("String", "API_KEY", "\"${getProperty('API_KEY')}\"")
+            buildConfigField("String", "OAUTH_CLIENT_ID", "\"${getProperty('OAUTH_CLIENT_ID')}\"")
         }
 
         debug {
             buildConfigField("String", "BASE_URL", "\"${getProperty('BASE_URL')}\"")
             buildConfigField("String", "API_KEY", "\"${getProperty('API_KEY')}\"")
+            buildConfigField("String", "OAUTH_CLIENT_ID", "\"${getProperty('OAUTH_CLIENT_ID')}\"")
         }
     }
 
@@ -69,6 +71,8 @@ ext {
 
     firebaseBoMVersion = "32.2.0"
 
+    googlePlayServiceVersion = "20.6.0"
+
     hiltVersion = "2.44"
 
     gsonVersion = "2.9.0"
@@ -104,6 +108,9 @@ dependencies {
     // Firebase BoM
     implementation platform("com.google.firebase:firebase-bom:$firebaseBoMVersion")
     implementation "com.google.firebase:firebase-auth-ktx"
+
+    // Google Play Services
+    implementation "com.google.android.gms:play-services-auth:$googlePlayServiceVersion"
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"

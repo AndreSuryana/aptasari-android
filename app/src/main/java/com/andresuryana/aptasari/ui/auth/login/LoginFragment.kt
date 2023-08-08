@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.andresuryana.aptasari.BuildConfig
 import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.databinding.FragmentLoginBinding
 import com.andresuryana.aptasari.util.Ext.isEmail
@@ -18,6 +19,9 @@ import com.andresuryana.aptasari.util.LoadingUtils.dismissLoadingDialog
 import com.andresuryana.aptasari.util.LoadingUtils.showLoadingDialog
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbar
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -31,6 +35,20 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<LoginViewModel>()
+
+    private val googleSignInLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            try {
+                if (it.data != null) {
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                    val account = task.getResult(ApiException::class.java)
+
+                    viewModel.loginWithGoogle(account.idToken)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,8 +90,20 @@ class LoginFragment : Fragment() {
             }
         }
         binding.btnLoginGoogle.setOnClickListener {
-            // TODO: Not yet implemented!
-            Toast.makeText(context, "Fitur ini belum tersedia!", Toast.LENGTH_SHORT).show()
+            // Create google sign in options
+            val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(BuildConfig.OAUTH_CLIENT_ID)
+                .requestEmail()
+                .build()
+
+            // Create google sign in client
+            val googleSignInClient = GoogleSignIn.getClient(requireContext(), signInOptions)
+
+            // Create google sign in intent
+            val signInIntent = googleSignInClient.signInIntent
+
+            // Launch intent
+            googleSignInLauncher.launch(signInIntent)
         }
         binding.btnRegister.setOnClickListener {
             findNavController().navigate(

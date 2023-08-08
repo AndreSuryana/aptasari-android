@@ -1,10 +1,10 @@
 package com.andresuryana.aptasari.ui.auth.login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.data.repository.UserRepository
 import com.andresuryana.aptasari.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +33,28 @@ class LoginViewModel @Inject constructor(
             _isLoading.postValue(true)
             when (val result = userRepository.login(email, password)) {
                 is Resource.Success -> {
-                    Log.d("LoginViewModel", "login: user=${result.data}")
+                    if (result.data != null) {
+                        _loginAction.emit(Unit)
+                    }
+                }
+
+                is Resource.Error -> _isError.emit(Pair(result.messageRes, result.message))
+            }
+            _isLoading.postValue(false)
+        }
+    }
+
+    fun loginWithGoogle(token: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            // Check token availability
+            if (token == null) {
+                _isError.emit(Pair(R.string.error_invalid_token_id, null))
+                return@launch
+            }
+
+            _isLoading.postValue(true)
+            when (val result = userRepository.loginWithGoogle(token)) {
+                is Resource.Success -> {
                     if (result.data != null) {
                         _loginAction.emit(Unit)
                     }

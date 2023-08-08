@@ -35,6 +35,10 @@ class UserRepositoryImpl(
     override suspend fun loginWithGoogle(token: String): Resource<User> {
         return try {
             val user = firebase.loginWithGoogle(token)
+            user?.let {
+                session.setCurrentUser(it.id, it.username, it.email)
+                local.userConfigDao().insert(UserConfigEntity(0, it.id!!, false))
+            }
             Resource.Success(user)
         } catch (e: Exception) {
             Resource.Error(e.message)

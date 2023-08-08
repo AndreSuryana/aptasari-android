@@ -106,6 +106,7 @@
     <string name="error_send_forgot_password_email">Gagal mengirim email! Mohon periksa email atau coba kembali</string>
     <string name="error_email_not_verified">Mohon verifikasi email sebelum melanjutkan</string>
     <string name="error_quiz_no_selected_answer">Pilih jawaban kamu terlebih dahulu</string>
+    <string name="error_invalid_token_id">Mohon maaf, id token google kamu tidak valid</string>
 
     <!-- Notification -->
     <string name="notif_title_learning_target">Ayo Belajar Sekarang!</string>
