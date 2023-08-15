@@ -84,7 +84,8 @@ class QuizViewModel @Inject constructor(
 
                     // Set first question if data not null
                     if (result.data != null) {
-                        _currentQuestion.postValue(result.data.first())
+                        if (result.data.isNotEmpty())
+                            _currentQuestion.postValue(result.data.first())
                     }
                 }
 

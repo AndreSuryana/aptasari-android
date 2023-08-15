@@ -84,9 +84,9 @@ class SplashViewModel @Inject constructor(
         updateProgress(POPULATING_DATA)
         quizData?.let { quizData ->
             try {
-                local.levelDao().insertAll(quizData.level)
-                local.questionDao().insertAll(quizData.questions)
-                local.answerDao().insertAll(quizData.answers)
+                local.levelDao().insertAll(quizData.getLevel())
+                local.questionDao().insertAll(quizData.getQuestions())
+                local.answerDao().insertAll(quizData.getAnswers())
 
                 delay(500L)
                 updateProgress(POPULATE_SUCCESS)
@@ -111,7 +111,7 @@ class SplashViewModel @Inject constructor(
 
     private fun getImageLevelLinks(quizData: QuizData): List<String> {
         val links = mutableListOf<String>()
-        quizData.level.forEach {
+        quizData.getLevel().forEach {
             links.add(it.iconPath)
             levelsMap[it.id] = getFilenameFromUrl(it.iconPath)
         }
@@ -120,7 +120,7 @@ class SplashViewModel @Inject constructor(
 
     private fun getAudioQuestionLinks(quizData: QuizData): List<String> {
         val links = mutableListOf<String>()
-        quizData.questions.forEach {
+        quizData.getQuestions().forEach {
             if (it.audioPath != null) {
                 links.add(it.audioPath)
                 questionMap[it.id] = getFilenameFromUrl(it.audioPath)

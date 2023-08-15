@@ -10,6 +10,7 @@ object DatabaseContract {
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_ICON_PATH = "icon_path"
+        const val COLUMN_ORDER = "order"
     }
 
     object QuestionTable {

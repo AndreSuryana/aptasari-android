@@ -15,5 +15,8 @@ data class LevelEntity(
     val title: String,
 
     @ColumnInfo(LevelTable.COLUMN_ICON_PATH)
-    val iconPath: String
+    val iconPath: String,
+
+    @ColumnInfo(LevelTable.COLUMN_ORDER)
+    val order: Int
 )

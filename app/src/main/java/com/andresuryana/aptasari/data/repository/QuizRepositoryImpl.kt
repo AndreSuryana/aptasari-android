@@ -13,7 +13,9 @@ class QuizRepositoryImpl(private val local: LocalDatabase, private val remote: A
 
     override suspend fun fetchLevels(): Resource<List<Level>> {
         return try {
-            Resource.Success(local.levelDao().getAllLevel().map { it.toLevel() })
+            Resource.Success(
+                local.levelDao().getAllLevel().map { it.toLevel() }.sortedBy { it.order }
+            )
         } catch (e: Exception) {
             Resource.Error(e.message)
         }
