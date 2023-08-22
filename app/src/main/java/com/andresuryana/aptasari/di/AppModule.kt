@@ -13,6 +13,7 @@ import com.andresuryana.aptasari.data.source.local.DatabaseContract
 import com.andresuryana.aptasari.data.source.local.LocalDatabase
 import com.andresuryana.aptasari.data.source.prefs.SessionHelper
 import com.andresuryana.aptasari.data.source.prefs.SessionHelperImpl
+import com.andresuryana.aptasari.data.source.remote.ANNService
 import com.andresuryana.aptasari.data.source.remote.ApiService
 import com.andresuryana.aptasari.util.FileDownloader
 import com.google.firebase.auth.FirebaseAuth
@@ -31,12 +32,20 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(firebase: FirebaseSource, session: SessionHelper, local: LocalDatabase): UserRepository =
+    fun provideUserRepository(
+        firebase: FirebaseSource,
+        session: SessionHelper,
+        local: LocalDatabase
+    ): UserRepository =
         UserRepositoryImpl(firebase, session, local)
 
     @Provides
     @Singleton
-    fun provideQuizRepository(local: LocalDatabase, remote: ApiService): QuizRepository = QuizRepositoryImpl(local, remote)
+    fun provideQuizRepository(
+        local: LocalDatabase,
+        remote: ApiService,
+        annService: ANNService
+    ): QuizRepository = QuizRepositoryImpl(local, remote, annService)
 
     @Provides
     @Singleton
@@ -61,6 +70,13 @@ object AppModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(ApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideANNService(): ANNService = Retrofit.Builder()
+        .baseUrl(BuildConfig.ANN_SERVICE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build().create(ANNService::class.java)
 
     @Provides
     @Singleton

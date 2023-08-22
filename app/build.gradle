@@ -27,12 +27,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "BASE_URL", "\"${getProperty('BASE_URL')}\"")
+            buildConfigField("String", "ANN_SERVICE_URL", "\"${getProperty('ANN_SERVICE_URL')}\"")
             buildConfigField("String", "API_KEY", "\"${getProperty('API_KEY')}\"")
             buildConfigField("String", "OAUTH_CLIENT_ID", "\"${getProperty('OAUTH_CLIENT_ID')}\"")
         }
 
         debug {
             buildConfigField("String", "BASE_URL", "\"${getProperty('BASE_URL')}\"")
+            buildConfigField("String", "ANN_SERVICE_URL", "\"${getProperty('ANN_SERVICE_URL')}\"")
             buildConfigField("String", "API_KEY", "\"${getProperty('API_KEY')}\"")
             buildConfigField("String", "OAUTH_CLIENT_ID", "\"${getProperty('OAUTH_CLIENT_ID')}\"")
         }
