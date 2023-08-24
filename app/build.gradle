@@ -67,7 +67,7 @@ ext {
     extJUnitVersion = "1.1.5"
     espressoVersion = "3.5.1"
 
-    navigationVersion = "2.6.0"
+    navigationVersion = "2.7.0"
 
     roomVersion = "2.5.2"
 
