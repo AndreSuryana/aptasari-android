@@ -114,6 +114,36 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_answer" />
 
+        <!-- Record Button Container -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/record_container"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_record"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:text="@string/btn_record_start"
+                android:textAllCaps="true"
+                android:textSize="20sp"
+                app:backgroundTint="@color/primary" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_record_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/record_waiting"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatImageView

@@ -1,5 +1,6 @@
 package com.andresuryana.aptasari.ui.quiz
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +15,16 @@ import com.andresuryana.aptasari.ui.quiz.QuizButtonState.CHECKING
 import com.andresuryana.aptasari.ui.quiz.QuizButtonState.CONTINUE
 import com.andresuryana.aptasari.ui.quiz.QuizButtonState.CORRECT
 import com.andresuryana.aptasari.ui.quiz.QuizButtonState.END
+import com.andresuryana.aptasari.ui.quiz.QuizButtonState.WAITING_AUDIO
 import com.andresuryana.aptasari.ui.quiz.QuizButtonState.WRONG
+import com.andresuryana.aptasari.util.QuizType.AUDIO_INPUT
+import com.andresuryana.aptasari.util.RecorderStatus
+import com.andresuryana.aptasari.util.RecorderStatus.RECORDING
+import com.andresuryana.aptasari.util.RecorderStatus.STOPPED
+import com.andresuryana.aptasari.util.RecorderStatus.WAITING
 import com.andresuryana.aptasari.util.Resource
+import com.github.squti.androidwaverecorder.RecorderState
+import com.github.squti.androidwaverecorder.WaveRecorder
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +33,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,12 +67,19 @@ class QuizViewModel @Inject constructor(
 
     var selectedAnswer: Answer? = null
 
+    // Timer Variables
     private var timerJob: Job? = null
+    private var isTimerPaused: Boolean = false
 
     private val _timer = MutableLiveData(0L)
     val timer: LiveData<Long> = _timer
 
-    private var isTimerPaused: Boolean = false
+    // Recorder Variables
+    private var recorder: WaveRecorder? = null
+    private var audioFilePath: String? = null
+
+    private val _recorderStatus = MutableLiveData(WAITING)
+    val recorderStatus: LiveData<RecorderStatus> = _recorderStatus
 
     data class QuizResult(
         var correctAnswer: Int = 0,
@@ -97,6 +114,12 @@ class QuizViewModel @Inject constructor(
     fun getCurrentQuestion() {
         if (_questions.value != null) {
             _currentQuestion.value = _questions.value?.get(_currentQuestionIndex.value!!)
+
+            // Add condition where type is AUDIO INPUT
+            // Set button state WAITING_AUDIO
+            if (_currentQuestion.value?.type == AUDIO_INPUT) {
+                _buttonState.value = WAITING_AUDIO
+            }
         }
     }
 
@@ -104,7 +127,7 @@ class QuizViewModel @Inject constructor(
         when (_buttonState.value!!) {
             CONTINUE -> nextQuestion()
             END -> viewModelScope.launch { _actionDone.emit(_quizResult) }
-            else -> checkAnswer()
+            else -> if (_currentQuestion.value!!.type == AUDIO_INPUT) predictAudioInput() else checkAnswer()
         }
     }
 
@@ -147,6 +170,54 @@ class QuizViewModel @Inject constructor(
         }
     }
 
+    fun startRecorder() {
+        if (recorder != null && _recorderStatus.value == WAITING) {
+            // Start audio recording
+            recorder?.startRecording()
+
+            // Update ui state for audio recording
+            _recorderStatus.postValue(RECORDING)
+        }
+    }
+
+    fun stopRecorder() {
+        if (recorder != null && _recorderStatus.value == RECORDING) {
+            // Stop recorder and get the audio file
+            recorder?.stopRecording()
+            recorder = null
+
+            // Update ui state for audio recording
+            _buttonState.value = CHECK
+            _recorderStatus.postValue(STOPPED)
+        }
+    }
+
+    fun initAudioRecorder(path: String) {
+        // Initialize audio recorder
+        if (recorder == null) {
+            recorder = WaveRecorder(path)
+            audioFilePath = path
+        }
+
+        // Setup noise suppressor
+        recorder?.noiseSuppressorActive = true
+
+        // Add state change listener
+        recorder?.onStateChangeListener = { state ->
+            when (state) {
+                RecorderState.RECORDING -> {
+                    _recorderStatus.value = RECORDING
+                }
+
+                RecorderState.STOP -> {
+                    _recorderStatus.value = STOPPED
+                }
+
+                else -> Unit
+            }
+        }
+    }
+
     private fun checkAnswer() {
         viewModelScope.launch {
             // Get current question
@@ -171,25 +242,55 @@ class QuizViewModel @Inject constructor(
                 // Check answer if false return with updated button state
                 // Simulate process with delay, also to make sure button state changed smoothly
                 delay(1000L)
-                if (selectedAnswer?.isCorrect == true) {
-                    _buttonState.value = CORRECT
-                    _quizResult.correctAnswer += 1
-                } else {
-                    _buttonState.value = WRONG
-                    _quizResult.wrongAnswer += 1
-                }
+                calculateCorrectAnswer(selectedAnswer?.isCorrect == true)
+
+                // Check is current question is the last question
                 delay(2000L)
+                checkIsLastQuestion()
+            }
+        }
+    }
 
-                // Check is this last question
-                val currentQuestionIndex = _currentQuestionIndex.value!!
-                val questionSize = _questions.value!!.size
-                val isLastQuestion = currentQuestionIndex == questionSize - 1
+    private fun predictAudioInput() {
+        viewModelScope.launch {
+            // Get current question
+            val question: Question? = _questions.value?.get(_currentQuestionIndex.value!!)
 
-                if (isLastQuestion) {
-                    _buttonState.value = END
-                    return@launch
-                } else {
-                    _buttonState.value = CONTINUE
+            // Make sure type is AUDIO_INPUT & audioFile is not null
+            if (question?.type != AUDIO_INPUT && question?.actualClass == null) {
+                _isError.emit(Pair(R.string.error_invalid_audio_input_question, null))
+                return@launch
+            }
+
+            // Update button state
+            if (_buttonState.value == CHECK) {
+                _buttonState.value = CHECKING
+            }
+
+            // Create audio file from the file path used in the recorder
+            audioFilePath?.let { path ->
+                val audioFile = File(path)
+                when (val result =
+                    quizRepository.predictAudio(question.actualClass.toString(), audioFile)) {
+                    is Resource.Success -> {
+                        // Check the prediction result
+                        if (result.data != null) {
+                            Log.d(
+                                "QuizViewModel",
+                                "predictAudioInput: actual=${result.data.actualClass}, predicted=${result.data.predictedClass}"
+                            )
+
+                            // Check answer if false return with updated button state
+                            calculateCorrectAnswer(result.data.actualClass == result.data.predictedClass)
+
+                            // Check is current question is the last question
+                            checkIsLastQuestion()
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        _isError.emit(Pair(result.messageRes, result.message))
+                    }
                 }
             }
         }
@@ -200,6 +301,29 @@ class QuizViewModel @Inject constructor(
         _buttonState.value = CHECK
         _currentQuestionIndex.value = _currentQuestionIndex.value?.plus(1)
         selectedAnswer = null
+        audioFilePath = null
+    }
 
+    private fun checkIsLastQuestion() {
+        val currentQuestionIndex = _currentQuestionIndex.value!!
+        val questionSize = _questions.value!!.size
+        val isLastQuestion = currentQuestionIndex == questionSize - 1
+
+        if (isLastQuestion) {
+            _buttonState.value = END
+            return
+        } else {
+            _buttonState.value = CONTINUE
+        }
+    }
+
+    private fun calculateCorrectAnswer(isCorrect: Boolean) {
+        if (isCorrect) {
+            _buttonState.value = CORRECT
+            _quizResult.correctAnswer += 1
+        } else {
+            _buttonState.value = WRONG
+            _quizResult.wrongAnswer += 1
+        }
     }
 }

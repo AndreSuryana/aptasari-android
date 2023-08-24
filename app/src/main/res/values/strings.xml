@@ -22,6 +22,7 @@
     <string name="title_logout">Keluar</string>
     <string name="title_quiz_text">Jawab pertanyaan ini</string>
     <string name="title_quiz_audio">Dengarkan suara ini</string>
+    <string name="title_quiz_audio_input">Cobalah kamu meniru suara ini</string>
     <string name="title_quiz_result">Selamat</string>
     <string name="title_checking_updates">Memeriksa pembaruan data</string>
     <string name="title_app_launch">Memulai aplikasi</string>
@@ -74,6 +75,8 @@
     <string name="btn_correct_answer">Benar</string>
     <string name="btn_end_quiz">Selesai</string>
     <string name="btn_back_to_level">Kembali ke Level</string>
+    <string name="btn_record_start">Rekam</string>
+    <string name="btn_record_stop">Stop</string>
 
     <!-- Learning Target -->
     <string name="target_title_relax">Santai</string>
@@ -84,6 +87,11 @@
     <string name="target_description_normal">10 menit sehari</string>
     <string name="target_description_serious">15 menit sehari</string>
     <string name="target_description_intense">20 menit sehari</string>
+
+    <!-- Recorder Status -->
+    <string name="record_waiting" tools:ignore="TypographyEllipsis">Menunggu rekaman...</string>
+    <string name="record_recording" tools:ignore="TypographyEllipsis">Sedang merekam...</string>
+    <string name="record_stopped" tools:ignore="TypographyEllipsis">Rekaman tersimpan...</string>
 
     <!-- Helper -->
     <string name="helper_empty_username">Username tidak boleh kosong</string>
@@ -107,6 +115,7 @@
     <string name="error_email_not_verified">Mohon verifikasi email sebelum melanjutkan</string>
     <string name="error_quiz_no_selected_answer">Pilih jawaban kamu terlebih dahulu</string>
     <string name="error_invalid_token_id">Mohon maaf, id token google kamu tidak valid</string>
+    <string name="error_invalid_audio_input_question">Terjadi kesalahan dalam membanca data pertanyaan</string>
 
     <!-- Notification -->
     <string name="notif_title_learning_target">Ayo Belajar Sekarang!</string>

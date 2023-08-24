@@ -10,4 +10,5 @@ data class Question(
     val audioPath: String? = null, // NULL if type AUDIO
     val levelId: String,
     val answers: List<Answer>,
+    val actualClass: String? = null
 )

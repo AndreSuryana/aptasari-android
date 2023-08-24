@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -21,6 +22,7 @@ import com.andresuryana.aptasari.data.model.Question
 import com.andresuryana.aptasari.databinding.FragmentQuizBinding
 import com.andresuryana.aptasari.util.Ext.formatTimer
 import com.andresuryana.aptasari.util.QuizType
+import com.andresuryana.aptasari.util.RecorderStatus
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbar
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 
 @AndroidEntryPoint
@@ -43,6 +46,8 @@ class QuizFragment : Fragment() {
     private var levelId: String? = null
 
     private var mediaPlayer: MediaPlayer? = null
+
+    private var isRecording = false
 
     override fun onResume() {
         super.onResume()
@@ -87,8 +92,13 @@ class QuizFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+
+        // Stop timer
         viewModel.pauseTimer()
         releaseMediaPlayer()
+
+        // Stop recorder
+        viewModel.stopRecorder()
     }
 
     private fun onAnswerClickListener(answer: Answer) {
@@ -101,6 +111,17 @@ class QuizFragment : Fragment() {
     private fun setupAnswerAdapter() {
         answerAdapter = AnswerAdapter()
         answerAdapter.setOnItemClickListener(this::onAnswerClickListener)
+    }
+
+    private fun setupRecyclerView(answers: List<Answer>) {
+        // Setup adapter
+        answerAdapter.setRecyclerViewTarget(binding.rvAnswer)
+        answerAdapter.submitList(answers)
+        binding.rvAnswer.apply {
+            adapter = answerAdapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        }
     }
 
     private fun setupButtonListener() {
@@ -118,6 +139,10 @@ class QuizFragment : Fragment() {
             } else {
                 mediaPlayer?.pause()
             }
+        }
+        binding.btnRecord.setOnClickListener {
+            if (!isRecording) viewModel.startRecorder()
+            else viewModel.stopRecorder()
         }
     }
 
@@ -214,35 +239,44 @@ class QuizFragment : Fragment() {
         viewModel.timer.observe(viewLifecycleOwner) { timer ->
             binding.tvTimer.text = timer.formatTimer()
         }
+
+        // Recorder status
+        viewModel.recorderStatus.observe(viewLifecycleOwner) { status ->
+            binding.tvRecordStatus.setText(status.text)
+            isRecording = status == RecorderStatus.RECORDING
+        }
     }
 
     private fun setCurrentQuestion(question: Question) {
         // Set title
         binding.tvTitle.text = question.title
-            ?: if (question.type == QuizType.AUDIO) getString(R.string.title_quiz_audio)
-            else getString(R.string.title_quiz_text)
+            ?: when(question.type) {
+                QuizType.AUDIO -> getString(R.string.title_quiz_audio)
+                QuizType.AUDIO_INPUT -> getString(R.string.title_quiz_audio_input)
+                else -> getString(R.string.title_quiz_text)
+            }
 
         // Current question type
         when (question.type) {
             QuizType.TEXT -> setTextQuestion(question)
             QuizType.AUDIO -> setAudioQuestion(question)
+            QuizType.AUDIO_INPUT -> setAudioInputQuestion(question)
             else -> Unit
         }
 
-        // Setup adapter
-        answerAdapter.setRecyclerViewTarget(binding.rvAnswer)
-        answerAdapter.submitList(question.answers)
-        binding.rvAnswer.apply {
-            adapter = answerAdapter
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        }
+        // Set visibility for rvAnswers
+        binding.rvAnswer.isVisible = question.type != QuizType.AUDIO_INPUT
     }
 
     private fun setTextQuestion(question: Question) {
         // Update ui
         binding.tvQuestion.visibility = View.VISIBLE
         binding.audioPlayerContainer.visibility = View.GONE
+        binding.rvAnswer.visibility = View.VISIBLE
+        binding.btnRecord.visibility = View.GONE
+
+        // Setup answer recycler view
+        setupRecyclerView(question.answers)
 
         // Set text question
         binding.tvQuestion.text = question.textQuestion
@@ -255,12 +289,41 @@ class QuizFragment : Fragment() {
         // Update ui
         binding.tvQuestion.visibility = View.GONE
         binding.audioPlayerContainer.visibility = View.VISIBLE
+        binding.rvAnswer.visibility = View.VISIBLE
+        binding.btnRecord.visibility = View.GONE
+
+        // Setup answer recycler view
+        setupRecyclerView(question.answers)
 
         // Set audio question
         mediaPlayer = MediaPlayer().apply {
             setDataSource(question.audioPath)
             prepare()
         }
+    }
+
+    private fun setAudioInputQuestion(question: Question) {
+        // Update ui
+        binding.tvQuestion.visibility = View.GONE
+        binding.audioPlayerContainer.visibility = View.VISIBLE
+        binding.rvAnswer.visibility = View.GONE
+        binding.btnRecord.visibility = View.VISIBLE
+
+        // Set audio question
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(question.audioPath)
+            prepare()
+        }
+
+        // Setup audio input recording
+        setupAudioRecorder()
+    }
+
+    private fun setupAudioRecorder() {
+        // Set audio file path
+        val timestamp = Calendar.getInstance().timeInMillis
+        val filePath = "${context?.externalCacheDir?.absolutePath}/audio_$timestamp.wav"
+        viewModel.initAudioRecorder(filePath)
     }
 
     private fun setUiStateEmptyLevel(isEmpty: Boolean) {

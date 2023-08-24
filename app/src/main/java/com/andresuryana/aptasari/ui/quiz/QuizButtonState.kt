@@ -11,6 +11,7 @@ enum class QuizButtonState(@StringRes val buttonText: Int, @ColorRes val color: 
     WRONG(R.string.btn_wrong_answer, R.color.danger, false),
     CORRECT(R.string.btn_correct_answer, R.color.success, false),
     CONTINUE(R.string.btn_continue_quiz, R.color.primary, true),
-    END(R.string.btn_end_quiz, R.color.primary, true)
+    END(R.string.btn_end_quiz, R.color.primary, true),
+    WAITING_AUDIO(R.string.btn_check, R.color.primary, false)
 
 }

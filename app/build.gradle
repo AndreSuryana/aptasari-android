@@ -80,6 +80,8 @@ ext {
     gsonVersion = "2.9.0"
 
     retrofitVersion = "2.9.0"
+
+    waveRecorderVersion = "1.7.0"
 }
 
 dependencies {
@@ -124,4 +126,7 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
+    // Wave Recorder
+    implementation "com.github.squti:Android-Wave-Recorder:$waveRecorderVersion"
 }
