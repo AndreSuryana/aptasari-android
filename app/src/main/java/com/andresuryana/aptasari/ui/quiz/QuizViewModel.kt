@@ -1,6 +1,5 @@
 package com.andresuryana.aptasari.ui.quiz
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -170,13 +169,16 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    fun startRecorder() {
+    fun startRecorder(path: String) {
         if (recorder != null && _recorderStatus.value == WAITING) {
             // Start audio recording
             recorder?.startRecording()
 
             // Update ui state for audio recording
             _recorderStatus.postValue(RECORDING)
+        } else {
+            initAudioRecorder(path)
+            startRecorder(path)
         }
     }
 
@@ -192,7 +194,7 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    fun initAudioRecorder(path: String) {
+    private fun initAudioRecorder(path: String) {
         // Initialize audio recorder
         if (recorder == null) {
             recorder = WaveRecorder(path)
@@ -253,6 +255,12 @@ class QuizViewModel @Inject constructor(
 
     private fun predictAudioInput() {
         viewModelScope.launch {
+            // Check audio recorder state
+            if (_recorderStatus.value != STOPPED) {
+                _isError.emit(Pair(R.string.error_waiting_audio_input, null))
+                return@launch
+            }
+
             // Get current question
             val question: Question? = _questions.value?.get(_currentQuestionIndex.value!!)
 
@@ -275,15 +283,11 @@ class QuizViewModel @Inject constructor(
                     is Resource.Success -> {
                         // Check the prediction result
                         if (result.data != null) {
-                            Log.d(
-                                "QuizViewModel",
-                                "predictAudioInput: actual=${result.data.actualClass}, predicted=${result.data.predictedClass}"
-                            )
-
                             // Check answer if false return with updated button state
-                            calculateCorrectAnswer(result.data.actualClass == result.data.predictedClass)
+                            calculateCorrectAnswer(question.actualClass == result.data.predictedClass)
 
                             // Check is current question is the last question
+                            delay(2000L)
                             checkIsLastQuestion()
                         }
                     }

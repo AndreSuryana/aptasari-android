@@ -104,6 +104,7 @@
     <string name="success_register">Registrasi berhasil! Silahkan login dengan akunmu</string>
     <string name="success_send_forgot_password_email">Email telah terkirim! Mohon periksa emailmu</string>
     <string name="success_set_target_alarm">Berhasil menyetel notifikasi target belajarmu</string>
+    <string name="success_request_audio_record_permission">Izin mengakses mic telah berhasil diminta</string>
 
     <!-- Error -->
     <string name="error_default">Terjadi kesalahan! Mohon coba kembali</string>
@@ -116,6 +117,7 @@
     <string name="error_quiz_no_selected_answer">Pilih jawaban kamu terlebih dahulu</string>
     <string name="error_invalid_token_id">Mohon maaf, id token google kamu tidak valid</string>
     <string name="error_invalid_audio_input_question">Terjadi kesalahan dalam membanca data pertanyaan</string>
+    <string name="error_waiting_audio_input">Sedang menunggu input audio</string>
 
     <!-- Notification -->
     <string name="notif_title_learning_target">Ayo Belajar Sekarang!</string>

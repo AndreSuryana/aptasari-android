@@ -11,9 +11,9 @@ import retrofit2.http.Part
 interface ANNService {
 
     @Multipart
-    @POST("v1/predict")
+    @POST("predict")
     suspend fun predictAudio(
-        @Part("audio") audio: MultipartBody.Part,
+        @Part audio: MultipartBody.Part,
         @Part("actual_class") actualClass: RequestBody
     ): ANNResponse<ANNPrediction>
 }

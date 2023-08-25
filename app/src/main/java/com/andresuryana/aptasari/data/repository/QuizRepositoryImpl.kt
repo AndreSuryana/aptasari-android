@@ -10,9 +10,10 @@ import com.andresuryana.aptasari.data.source.local.LocalDatabase
 import com.andresuryana.aptasari.data.source.remote.ANNService
 import com.andresuryana.aptasari.data.source.remote.ApiService
 import com.andresuryana.aptasari.util.Resource
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class QuizRepositoryImpl(
@@ -57,11 +58,11 @@ class QuizRepositoryImpl(
             val audioPart = MultipartBody.Part.createFormData(
                 "audio",
                 audio.name,
-                RequestBody.create(MediaType.parse("audio/*"), audio)
+                audio.asRequestBody("audio/*".toMediaTypeOrNull())
             )
 
             // Create 'actualClass' part
-            val actualClassPart = RequestBody.create(MediaType.parse("text/plain"), actualClass)
+            val actualClassPart = actualClass.toRequestBody("text/plain".toMediaTypeOrNull())
 
             // Request to ANN Service
             val result = annService.predictAudio(audioPart, actualClassPart)

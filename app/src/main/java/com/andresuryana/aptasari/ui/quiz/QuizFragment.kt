@@ -1,11 +1,16 @@
 package com.andresuryana.aptasari.ui.quiz
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -48,6 +53,23 @@ class QuizFragment : Fragment() {
     private var mediaPlayer: MediaPlayer? = null
 
     private var isRecording = false
+
+    private var requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            Toast.makeText(
+                context,
+                getString(R.string.success_request_audio_record_permission),
+                Toast.LENGTH_SHORT
+            ).show()
+
+            // Set audio file path & start recording
+            val timestamp = Calendar.getInstance().timeInMillis
+            val filePath = "${context?.externalCacheDir?.absolutePath}/audio_$timestamp.wav"
+            viewModel.startRecorder(filePath)
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -141,8 +163,12 @@ class QuizFragment : Fragment() {
             }
         }
         binding.btnRecord.setOnClickListener {
-            if (!isRecording) viewModel.startRecorder()
-            else viewModel.stopRecorder()
+            if (!isRecording) {
+                // Set audio file path & start recording
+                val timestamp = Calendar.getInstance().timeInMillis
+                val filePath = "${context?.externalCacheDir?.absolutePath}/audio_$timestamp.wav"
+                viewModel.startRecorder(filePath)
+            } else viewModel.stopRecorder()
         }
     }
 
@@ -244,13 +270,17 @@ class QuizFragment : Fragment() {
         viewModel.recorderStatus.observe(viewLifecycleOwner) { status ->
             binding.tvRecordStatus.setText(status.text)
             isRecording = status == RecorderStatus.RECORDING
+            binding.btnRecord.setText(
+                if (isRecording) R.string.btn_record_stop
+                else R.string.btn_record_start
+            )
         }
     }
 
     private fun setCurrentQuestion(question: Question) {
         // Set title
         binding.tvTitle.text = question.title
-            ?: when(question.type) {
+            ?: when (question.type) {
                 QuizType.AUDIO -> getString(R.string.title_quiz_audio)
                 QuizType.AUDIO_INPUT -> getString(R.string.title_quiz_audio_input)
                 else -> getString(R.string.title_quiz_text)
@@ -315,15 +345,31 @@ class QuizFragment : Fragment() {
             prepare()
         }
 
-        // Setup audio input recording
-        setupAudioRecorder()
+        // Check for audio record permission
+        checkAudioRecordPermission()
     }
 
-    private fun setupAudioRecorder() {
-        // Set audio file path
-        val timestamp = Calendar.getInstance().timeInMillis
-        val filePath = "${context?.externalCacheDir?.absolutePath}/audio_$timestamp.wav"
-        viewModel.initAudioRecorder(filePath)
+    private fun checkAudioRecordPermission() {
+        // Check for permission
+        when {
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED -> {
+                requestPermissionLauncher.launch(
+                    Manifest.permission.RECORD_AUDIO
+                )
+            }
+
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.RECORD_AUDIO
+            ) -> {
+                requestPermissionLauncher.launch(
+                    Manifest.permission.RECORD_AUDIO
+                )
+            }
+        }
     }
 
     private fun setUiStateEmptyLevel(isEmpty: Boolean) {
