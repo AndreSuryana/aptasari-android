@@ -17,11 +17,12 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_icon"
             android:layout_width="64dp"
-            android:layout_height="64dp" />
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="14sp" />
