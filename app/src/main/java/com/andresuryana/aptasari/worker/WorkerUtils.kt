@@ -38,7 +38,7 @@ object WorkerUtils {
         }
     }
 
-    fun isNotifyUser(userConfig: UserConfigEntity?): Boolean {
-        return userConfig?.isNotifyTarget == true && userConfig.playTimeDuration < userConfig.notifyDuration
+    fun isNotifyUser(userConfig: UserConfigEntity): Boolean {
+        return userConfig.isNotifyTarget && userConfig.playTimeDuration < userConfig.notifyDuration
     }
 }
