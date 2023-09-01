@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Aptasari"
 include ':app'
-include ':mfcc'
