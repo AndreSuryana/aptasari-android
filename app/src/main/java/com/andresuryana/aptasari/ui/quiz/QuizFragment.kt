@@ -303,7 +303,7 @@ class QuizFragment : Fragment() {
         binding.tvQuestion.visibility = View.VISIBLE
         binding.audioPlayerContainer.visibility = View.GONE
         binding.rvAnswer.visibility = View.VISIBLE
-        binding.btnRecord.visibility = View.GONE
+        binding.recordContainer.visibility = View.GONE
 
         // Setup answer recycler view
         setupRecyclerView(question.answers)
@@ -320,7 +320,7 @@ class QuizFragment : Fragment() {
         binding.tvQuestion.visibility = View.GONE
         binding.audioPlayerContainer.visibility = View.VISIBLE
         binding.rvAnswer.visibility = View.VISIBLE
-        binding.btnRecord.visibility = View.GONE
+        binding.recordContainer.visibility = View.GONE
 
         // Setup answer recycler view
         setupRecyclerView(question.answers)
@@ -337,7 +337,7 @@ class QuizFragment : Fragment() {
         binding.tvQuestion.visibility = View.GONE
         binding.audioPlayerContainer.visibility = View.VISIBLE
         binding.rvAnswer.visibility = View.GONE
-        binding.btnRecord.visibility = View.VISIBLE
+        binding.recordContainer.visibility = View.VISIBLE
 
         // Set audio question
         mediaPlayer = MediaPlayer().apply {
