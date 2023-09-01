@@ -10,9 +10,10 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.andresuryana.aptasari.MainActivity
 import com.andresuryana.aptasari.R
+import com.andresuryana.aptasari.data.source.local.entity.UserConfigEntity
+import com.andresuryana.aptasari.di.AppModule
 import com.andresuryana.aptasari.util.Ext.toMinutes
-import com.andresuryana.aptasari.worker.WorkerUtils.getCurrentUserConfig
-import com.andresuryana.aptasari.worker.WorkerUtils.isNotifyUser
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +32,22 @@ class TargetAlarmReceiver : BroadcastReceiver() {
                 }
             }
         }
+    }
+
+    private suspend fun getCurrentUserConfig(context: Context?): UserConfigEntity? {
+        val local = context?.applicationContext?.let { AppModule.provideLocalDatabase(it) }
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        return try {
+            if (local != null && userId != null) {
+                local.userConfigDao().getUserConfigByUserId(userId)
+            } else null
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun isNotifyUser(userConfig: UserConfigEntity): Boolean {
+        return userConfig.isNotifyTarget && userConfig.playTimeDuration < userConfig.notifyDuration
     }
 
     private fun showTargetNotification(context: Context, targetDuration: Long) {
