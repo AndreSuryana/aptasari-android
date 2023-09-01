@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "287927855445",
+    "firebase_url": "https://aptasari-android-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "aptasari-android",
     "storage_bucket": "aptasari-android.appspot.com"
   },
@@ -22,7 +23,7 @@
           }
         },
         {
-          "client_id": "287927855445-vih4gvir69fir4v1uttu25tmfqhmi8dd.apps.googleusercontent.com",
+          "client_id": "287927855445-bopk8go6skii46d6un9s602hplch212e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "287927855445-vih4gvir69fir4v1uttu25tmfqhmi8dd.apps.googleusercontent.com",
+              "client_id": "287927855445-bopk8go6skii46d6un9s602hplch212e.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

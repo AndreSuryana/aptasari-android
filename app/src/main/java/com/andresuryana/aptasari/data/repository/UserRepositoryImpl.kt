@@ -114,4 +114,22 @@ class UserRepositoryImpl(
             Resource.Error(e.message)
         }
     }
+
+    override suspend fun getUserProfile(): Resource<User> {
+        return try {
+            val user = firebase.getUserProfile()
+            Resource.Success(user)
+        } catch (e: Exception) {
+            Resource.Error(e.message)
+        }
+    }
+
+    override suspend fun updateUserProfile(newUser: User): Resource<Boolean> {
+        return try {
+            firebase.updateUserProfile(newUser)
+            Resource.Success(true)
+        } catch (e: Exception) {
+            Resource.Error(e.message)
+        }
+    }
 }

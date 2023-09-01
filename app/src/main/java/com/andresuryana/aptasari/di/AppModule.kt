@@ -17,6 +17,7 @@ import com.andresuryana.aptasari.data.source.remote.ANNService
 import com.andresuryana.aptasari.data.source.remote.ApiService
 import com.andresuryana.aptasari.util.FileDownloader
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,7 +54,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFirebaseSource(): FirebaseSource =
-        FirebaseSourceImpl(FirebaseAuth.getInstance())
+        FirebaseSourceImpl(FirebaseAuth.getInstance(), FirebaseDatabase.getInstance())
 
     @Provides
     @Singleton

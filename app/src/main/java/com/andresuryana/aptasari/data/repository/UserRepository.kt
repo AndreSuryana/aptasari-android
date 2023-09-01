@@ -21,4 +21,8 @@ interface UserRepository {
     suspend fun updateUserNotificationConfig(userId: String, isNotifyTarget: Boolean, notifyDuration: Long): Resource<Boolean>
 
     suspend fun updateUserPlayTime(userId: String, playTime: Long): Resource<Boolean>
+
+    suspend fun getUserProfile(): Resource<User>
+
+    suspend fun updateUserProfile(newUser: User): Resource<Boolean>
 }

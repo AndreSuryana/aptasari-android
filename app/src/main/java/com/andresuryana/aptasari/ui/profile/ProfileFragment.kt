@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -82,7 +81,7 @@ class ProfileFragment : Fragment() {
     private fun onMenuItemClickListener(menu: SettingMenu) {
         when (menu) {
             SettingMenu.ACCOUNT -> {
-                Toast.makeText(context, "Pengaturan Akun", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.navigateToAccountFragment)
             }
             SettingMenu.LEARNING_TARGET -> {
                 findNavController().navigate(R.id.targetFragment)
@@ -145,7 +144,7 @@ class ProfileFragment : Fragment() {
             context,
             TargetAlarmReceiver.TARGET_NOTIFICATION_ID,
             Intent(context, TargetAlarmReceiver::class.java),
-            PendingIntent.FLAG_NO_CREATE
+            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
         )
 
         // Cancel alarm if there is target alarm running

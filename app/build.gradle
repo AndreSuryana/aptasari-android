@@ -112,6 +112,7 @@ dependencies {
     // Firebase BoM
     implementation platform("com.google.firebase:firebase-bom:$firebaseBoMVersion")
     implementation "com.google.firebase:firebase-auth-ktx"
+    implementation "com.google.firebase:firebase-database-ktx"
 
     // Google Play Services
     implementation "com.google.android.gms:play-services-auth:$googlePlayServiceVersion"

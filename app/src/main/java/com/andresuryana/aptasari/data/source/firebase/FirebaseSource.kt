@@ -14,4 +14,8 @@ interface FirebaseSource {
 
     suspend fun forgotPassword(email: String)
 
+    suspend fun getUserProfile(): User?
+
+    suspend fun updateUserProfile(newUser: User): Boolean
+
 }

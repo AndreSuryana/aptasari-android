@@ -54,6 +54,7 @@
     <string name="label_password">Password</string>
     <string name="label_confirm_password">Konfirmasi Password</string>
     <string name="label_search" tools:ignore="TypographyEllipsis">Cari...</string>
+    <string name="label_address">Alamat</string>
 
     <!-- Button -->
     <string name="btn_login">Login</string>
@@ -104,6 +105,7 @@
     <string name="success_send_forgot_password_email">Email telah terkirim! Mohon periksa emailmu</string>
     <string name="success_set_target_alarm">Berhasil menyetel notifikasi target belajarmu</string>
     <string name="success_request_audio_record_permission">Izin mengakses mic telah berhasil diminta</string>
+    <string name="success_update_general">Perubahan berhasil disimpan</string>
 
     <!-- Error -->
     <string name="error_default">Terjadi kesalahan! Mohon coba kembali</string>
