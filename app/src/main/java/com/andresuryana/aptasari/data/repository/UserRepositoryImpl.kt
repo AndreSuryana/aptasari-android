@@ -75,6 +75,15 @@ class UserRepositoryImpl(
         }
     }
 
+    override suspend fun getUserConfig(userId: String): Resource<UserConfigEntity> {
+        return try {
+            val userConfig = local.userConfigDao().getUserConfigByUserId(userId)
+            Resource.Success(userConfig)
+        } catch (e: Exception) {
+            Resource.Error(e.message)
+        }
+    }
+
     override suspend fun updateUserNotificationConfig(
         userId: String,
         isNotifyTarget: Boolean,

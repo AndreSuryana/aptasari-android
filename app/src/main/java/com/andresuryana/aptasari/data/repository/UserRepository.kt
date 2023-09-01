@@ -1,6 +1,7 @@
 package com.andresuryana.aptasari.data.repository
 
 import com.andresuryana.aptasari.data.model.User
+import com.andresuryana.aptasari.data.source.local.entity.UserConfigEntity
 import com.andresuryana.aptasari.util.Resource
 
 interface UserRepository {
@@ -14,6 +15,8 @@ interface UserRepository {
     suspend fun logout(): Resource<Boolean>
 
     suspend fun forgotPassword(email: String): Resource<Boolean>
+
+    suspend fun getUserConfig(userId: String): Resource<UserConfigEntity>
 
     suspend fun updateUserNotificationConfig(userId: String, isNotifyTarget: Boolean, notifyDuration: Long): Resource<Boolean>
 
