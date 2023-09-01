@@ -84,9 +84,6 @@ class ProfileFragment : Fragment() {
             SettingMenu.ACCOUNT -> {
                 Toast.makeText(context, "Pengaturan Akun", Toast.LENGTH_SHORT).show()
             }
-            SettingMenu.ADDRESS -> {
-                Toast.makeText(context, "Alamat", Toast.LENGTH_SHORT).show()
-            }
             SettingMenu.LEARNING_TARGET -> {
                 findNavController().navigate(R.id.targetFragment)
             }
