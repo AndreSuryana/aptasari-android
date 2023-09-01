@@ -1,5 +1,10 @@
 package com.andresuryana.aptasari.ui.profile
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +22,7 @@ import com.andresuryana.aptasari.R
 import com.andresuryana.aptasari.databinding.FragmentProfileBinding
 import com.andresuryana.aptasari.databinding.ItemSettingBinding
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbarError
+import com.andresuryana.aptasari.worker.TargetAlarmReceiver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -117,7 +123,8 @@ class ProfileFragment : Fragment() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.logoutAction.collectLatest {
                     withContext(Dispatchers.Main) {
-                        // TODO: Make sure disable alarm work manager if user logged out
+                        // Make sure disable alarm work manager if user logged out
+                        cancelTargetAlarm(requireContext())
 
                         // Navigate to on boarding fragment
                         val options = NavOptions.Builder()
@@ -129,5 +136,23 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun cancelTargetAlarm(context: Context) {
+        // Get alarm manager from service
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        // Get target alarm intent
+        @SuppressLint("UnspecifiedImmutableFlag")
+        val alarmIntent = PendingIntent.getService(
+            context,
+            TargetAlarmReceiver.TARGET_NOTIFICATION_ID,
+            Intent(context, TargetAlarmReceiver::class.java),
+            PendingIntent.FLAG_NO_CREATE
+        )
+
+        // Cancel alarm if there is target alarm running
+        if (alarmIntent != null)
+            alarmManager.cancel(alarmIntent)
     }
 }
