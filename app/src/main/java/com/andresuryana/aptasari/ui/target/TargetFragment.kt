@@ -170,6 +170,15 @@ class TargetFragment : Fragment() {
                 }
             }
         }
+
+        // Current user config
+        viewModel.userConfig.observe(viewLifecycleOwner) { userConfig ->
+            // Set selected target from user config
+            val target = targetAdapter.currentList.first {
+                it.duration == userConfig.notifyDuration
+            }
+            targetAdapter.setSelectedItem(binding.rvTarget, target)
+        }
     }
 
     private fun checkNotificationPermission() {
