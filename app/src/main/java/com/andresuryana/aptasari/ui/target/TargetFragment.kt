@@ -174,10 +174,10 @@ class TargetFragment : Fragment() {
         // Current user config
         viewModel.userConfig.observe(viewLifecycleOwner) { userConfig ->
             // Set selected target from user config
-            val target = targetAdapter.currentList.first {
+            val target = targetAdapter.currentList.firstOrNull {
                 it.duration == userConfig.notifyDuration
             }
-            targetAdapter.setSelectedItem(binding.rvTarget, target)
+            target?.let { targetAdapter.setSelectedItem(binding.rvTarget, it) }
         }
     }
 
@@ -212,14 +212,6 @@ class TargetFragment : Fragment() {
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }.timeInMillis
-
-        // Repeat alarm with an interval of 1 day
-//        alarmManager.setRepeating(
-//            AlarmManager.RTC_WAKEUP,
-//            triggerTime,
-//            AlarmManager.INTERVAL_DAY,
-//            alarmIntent
-//        )
 
         alarmManager.setAlarmClock(
             AlarmManager.AlarmClockInfo(triggerTime, alarmIntent),
