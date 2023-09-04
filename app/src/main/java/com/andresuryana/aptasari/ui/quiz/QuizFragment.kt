@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +55,8 @@ class QuizFragment : Fragment() {
     private var mediaPlayer: MediaPlayer? = null
 
     private var isRecording = false
+
+    private var handlerAnimation = Handler(Looper.getMainLooper())
 
     private var requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -274,6 +278,8 @@ class QuizFragment : Fragment() {
                 if (isRecording) R.string.btn_record_stop
                 else R.string.btn_record_start
             )
+            if (isRecording) startPulseButton()
+            else stopPulseButton()
         }
     }
 
@@ -388,5 +394,26 @@ class QuizFragment : Fragment() {
             release()
         }
         mediaPlayer = null
+    }
+
+    private fun startPulseButton() {
+        pulseRunnable.run()
+    }
+
+    private fun stopPulseButton() {
+        handlerAnimation.removeCallbacks(pulseRunnable)
+    }
+
+    private var pulseRunnable = object : Runnable {
+
+        override fun run() {
+            binding.pulseRecordButton.animate().scaleX(4f).scaleY(4f).alpha(0f).setDuration(1000)
+                .withEndAction {
+                    binding.pulseRecordButton.scaleX = 1f
+                    binding.pulseRecordButton.scaleY = 1f
+                    binding.pulseRecordButton.alpha = 1f
+                }
+            handlerAnimation.postDelayed(this, 1500L)
+        }
     }
 }

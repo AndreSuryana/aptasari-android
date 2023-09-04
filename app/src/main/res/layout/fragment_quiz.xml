@@ -115,14 +115,13 @@
             tools:listitem="@layout/item_answer" />
 
         <!-- Record Button Container -->
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/record_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:gravity="center">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_record"
@@ -135,18 +134,36 @@
                 android:text="@string/btn_record_start"
                 android:textAllCaps="true"
                 android:textSize="20sp"
-                app:backgroundTint="@color/primary" />
+                app:backgroundTint="@color/primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/pulse_record_button"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:elevation="-8dp"
+                android:src="@drawable/circle_background"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_record"
+                app:layout_constraintEnd_toEndOf="@+id/btn_record"
+                app:layout_constraintStart_toStartOf="@+id/btn_record"
+                app:layout_constraintTop_toTopOf="@+id/btn_record" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_record_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="@string/record_waiting"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_record" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
