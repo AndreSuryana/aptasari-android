@@ -28,6 +28,8 @@ import com.andresuryana.aptasari.data.model.Answer
 import com.andresuryana.aptasari.data.model.Question
 import com.andresuryana.aptasari.databinding.FragmentQuizBinding
 import com.andresuryana.aptasari.util.Ext.formatTimer
+import com.andresuryana.aptasari.util.LoadingUtils.dismissLoadingDialog
+import com.andresuryana.aptasari.util.LoadingUtils.showLoadingDialog
 import com.andresuryana.aptasari.util.QuizType
 import com.andresuryana.aptasari.util.RecorderStatus
 import com.andresuryana.aptasari.util.SnackbarUtils.showSnackbar
@@ -177,6 +179,12 @@ class QuizFragment : Fragment() {
     }
 
     private fun observeUiState() {
+        // Loading
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) activity?.showLoadingDialog()
+            else activity?.dismissLoadingDialog()
+        }
+
         // Error
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

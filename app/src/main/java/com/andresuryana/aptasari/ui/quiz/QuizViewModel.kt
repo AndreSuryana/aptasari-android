@@ -47,6 +47,9 @@ class QuizViewModel @Inject constructor(
     private var _currentQuestion = MutableLiveData<Question>()
     val currentQuestion: LiveData<Question> = _currentQuestion
 
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
     private val _isError = MutableSharedFlow<Pair<Int?, String?>>()
     val isError = _isError.asSharedFlow()
 
@@ -255,9 +258,12 @@ class QuizViewModel @Inject constructor(
 
     private fun predictAudioInput() {
         viewModelScope.launch {
+            _isLoading.postValue(true)
+
             // Check audio recorder state
             if (_recorderStatus.value != STOPPED) {
                 _isError.emit(Pair(R.string.error_waiting_audio_input, null))
+                _isLoading.postValue(false)
                 return@launch
             }
 
@@ -285,6 +291,7 @@ class QuizViewModel @Inject constructor(
                         if (result.data != null) {
                             // Check answer if false return with updated button state
                             calculateCorrectAnswer(question.actualClass == result.data.predictedClass)
+                            _isLoading.postValue(false)
 
                             // Check is current question is the last question
                             delay(2000L)
@@ -294,6 +301,7 @@ class QuizViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _isError.emit(Pair(result.messageRes, result.message))
+                        _isLoading.postValue(false)
                     }
                 }
             }
