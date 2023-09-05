@@ -11,10 +11,15 @@ object LoadingUtils {
 
     class LoadingDialogFragment : DialogFragment() {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            return AlertDialog.Builder(requireContext())
+            val loadingDialog = AlertDialog.Builder(requireContext())
                 .setView(R.layout.dialog_loading)
                 .setCancelable(false)
                 .create()
+
+            // Prevent the dialog from being canceled on touch outside
+            loadingDialog.setCanceledOnTouchOutside(false)
+
+            return loadingDialog
         }
     }
 
@@ -36,7 +41,8 @@ object LoadingUtils {
 
     fun FragmentActivity.dismissLoadingDialog() {
         val fragmentManager = supportFragmentManager
-        val loadingDialog = fragmentManager.findFragmentByTag("loading_dialog") as? LoadingDialogFragment
-        loadingDialog?.dismissAllowingStateLoss()
+        val loadingDialog =
+            fragmentManager.findFragmentByTag("loading_dialog") as? LoadingDialogFragment
+        loadingDialog?.dismiss()
     }
 }
