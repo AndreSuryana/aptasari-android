@@ -70,28 +70,35 @@
             android:textStyle="bold" />
 
         <!-- Audio Player -->
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <RelativeLayout
             android:id="@+id/audio_player_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_play_audio"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:background="?selectableItemBackground"
                 android:src="@drawable/ic_volume"
                 android:tint="@color/primary"
-                app:tint="@color/primary" />
+                app:tint="@color/primary"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-            <com.andresuryana.aptasari.ui.component.WaveformView
-                android:layout_width="0dp"
-                android:layout_height="48dp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_male_female_prayer" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </RelativeLayout>
 
         <!-- Text Question -->
         <com.google.android.material.textview.MaterialTextView
@@ -112,7 +119,8 @@
             android:overScrollMode="never"
             android:paddingVertical="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_answer" />
+            tools:listitem="@layout/item_answer"
+            tools:visibility="gone" />
 
         <!-- Record Button Container -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -138,7 +146,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.4" />
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
                 android:id="@+id/pulse_record_button"

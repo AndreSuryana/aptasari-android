@@ -41,68 +41,82 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_logo_subtitle">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/linear_container"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingHorizontal="24dp"
-            android:paddingTop="24dp"
-            android:paddingBottom="56dp">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_title"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/linear_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title_onboarding"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textSize="20sp"
-                android:textStyle="italic|bold" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="56dp">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_subtitle"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_onboarding"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="20sp"
+                    android:textStyle="italic|bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/subtitle_onboarding"
+                    android:textColor="@color/primary"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/btn_login"
+                    android:textAllCaps="true"
+                    android:textSize="18sp"
+                    app:backgroundTint="@color/primary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_register"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="16dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/btn_register"
+                    android:textAllCaps="true"
+                    android:textColor="@color/primary"
+                    android:textSize="18sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="16dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/subtitle_onboarding"
-                android:textColor="@color/primary"
-                android:textSize="18sp"
-                android:textStyle="italic" />
+                android:layout_height="match_parent"
+                android:alpha="0.45"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_temple"
+                android:translationZ="-1dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:text="@string/btn_login"
-                android:textAllCaps="true"
-                android:textSize="18sp"
-                app:backgroundTint="@color/primary" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_register"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
-                android:layout_marginTop="16dp"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:text="@string/btn_register"
-                android:textAllCaps="true"
-                android:textColor="@color/primary"
-                android:textSize="18sp" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </FrameLayout>
 
     </androidx.cardview.widget.CardView>
 
