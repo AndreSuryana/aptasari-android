@@ -173,15 +173,17 @@ class QuizViewModel @Inject constructor(
     }
 
     fun startRecorder(path: String) {
-        if (recorder != null && _recorderStatus.value == WAITING) {
-            // Start audio recording
-            recorder?.startRecording()
+        if (_recorderStatus.value == WAITING) {
+            if (recorder != null) {
+                // Start audio recording
+                recorder?.startRecording()
 
-            // Update ui state for audio recording
-            _recorderStatus.postValue(RECORDING)
-        } else {
-            initAudioRecorder(path)
-            startRecorder(path)
+                // Update ui state for audio recording
+                _recorderStatus.postValue(RECORDING)
+            } else {
+                initAudioRecorder(path)
+                startRecorder(path)
+            }
         }
     }
 
@@ -302,6 +304,11 @@ class QuizViewModel @Inject constructor(
                     is Resource.Error -> {
                         _isError.emit(Pair(result.messageRes, result.message))
                         _isLoading.postValue(false)
+
+                        // Reset state
+                        _buttonState.postValue(WAITING_AUDIO)
+                        _recorderStatus.postValue(WAITING)
+                        audioFilePath = null
                     }
                 }
             }
